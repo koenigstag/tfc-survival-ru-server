@@ -25,7 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING
     },
     password: {
-      field: 'passwordHash',
+      field: 'password_hash',
       allowNull: false,
       type: DataTypes.TEXT
     },
@@ -70,6 +70,7 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'User',
     tableName: 'users',
+    underscored: true,
   });
 
   User.beforeCreate(hashPassword)
