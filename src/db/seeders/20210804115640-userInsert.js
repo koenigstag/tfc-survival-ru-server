@@ -6,8 +6,10 @@ module.exports = {
     const users = [];
     for (let i = 0; i < 10; i++) {
       users.push({
-        nickname: "test" + i,
-        password: "pass" + i,
+        nickname: 'test' + i,
+        password: 'pass' + i,
+        accessToken: 'asdQWE',
+        refreshToken: 'asdQWE',
       });
     }
     await User.bulkCreate(users);
