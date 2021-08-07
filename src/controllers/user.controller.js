@@ -21,7 +21,7 @@ module.exports.createUser = async (req, res, next) => {
 
     res.status(200).send({ data: newUser });
   } catch (e) {
-    next(e);
+    next(e)
   }
 };
 
@@ -30,8 +30,6 @@ module.exports.getUser = async (req, res, next) => {
     const {
       params: { nickname, token },
     } = req;
-
-    console.log(nickname);
 
     const user = await User.findOne({ where: { nickname } });
 
