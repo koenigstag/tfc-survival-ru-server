@@ -20,9 +20,28 @@ module.exports.createUser = async (req, res, next) => {
     if (!newUser) {
       return next(new EmptyResultError('Cant create user with that data'));
     }
-    //delete newUser.dataValues.password;
+    delete newUser.dataValues.password;
 
     res.status(200).send({ data: newUser });
+  } catch (e) {
+    next(e);
+  }
+};
+
+module.exports.loginUser = async (req, res, next) => {
+  try {
+    const {
+      params: { nickname },
+      // passwordHash
+    } = req;
+
+    const user = await User.findOne({ where: { nickname } });
+
+    if (!user) {
+      return next(new EmptyResultError('Cant find user with given nickname'));
+    }
+
+    res.status(200).send({ data: user });
   } catch (e) {
     next(e);
   }
@@ -31,7 +50,8 @@ module.exports.createUser = async (req, res, next) => {
 module.exports.getUser = async (req, res, next) => {
   try {
     const {
-      params: { nickname, token },
+      params: { nickname },
+      token,
     } = req;
 
     const user = await User.findOne({ where: { nickname } });
