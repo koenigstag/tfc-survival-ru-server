@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
       },
       email: {
-        allowNull: true,
+        allowNull: false,
         isUnique: function (value) {
           User.findAllAndCount({
             attributes: ['email'],

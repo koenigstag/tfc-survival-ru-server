@@ -19,6 +19,7 @@ module.exports = {
         type: Sequelize.TEXT
       },
       email: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       discord: {
