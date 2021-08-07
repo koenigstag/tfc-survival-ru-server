@@ -6,7 +6,13 @@ module.exports.createUser = async (req, res, next) => {
       body: { user },
     } = req;
 
-    const newUser = await User.create(user);
+    // TODO tokens
+    const newUser = await User.create(
+      Object.assign({}, user, {
+        accessToken: 'access asdQWE',
+        refreshToken: 'refresh asdQWE',
+      })
+    );
 
     if (!newUser) {
       throw new Error('Cannot create user');
