@@ -9,12 +9,13 @@ module.exports.createUser = async (req, res, next) => {
     } = req;
 
     // TODO tokens
-    const newUser = await User.create(
-      Object.assign({}, user, {
+    const newUser = await User.create({
+      ...user,
+      ...{
         accessToken: 'access asdQWE',
         refreshToken: 'refresh asdQWE',
-      })
-    );
+      },
+    });
 
     if (!newUser) {
       return next(new EmptyResultError('Cant create user with that data'));
