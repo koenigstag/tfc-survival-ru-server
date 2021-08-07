@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       nickname: {
         allowNull: false,
         unique: true,
+        // like: /^$/,
         type: DataTypes.STRING,
       },
       password: {
@@ -29,6 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         allowNull: false,
+        // like: /^$/,
         isUnique: function (value) {
           User.findAllAndCount({
             attributes: ['email'],
