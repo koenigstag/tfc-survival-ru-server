@@ -15,7 +15,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get('/', (req, res, next) => res.send('Sanya huy sosi') )
+app.get('/', (req, res, next) => res.send('<i>Sanya huy sosi</i>'));
 
 app.use('/api', router);
 
