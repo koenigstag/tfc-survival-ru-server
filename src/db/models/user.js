@@ -14,6 +14,10 @@ async function hashPassword (user, options) {
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate (models) {}
+
+    async comparePassword (password) {
+      return bcrypt.compare(password, this.getDataValue('password'));
+    }
   }
   User.init(
     {
@@ -68,12 +72,12 @@ module.exports = (sequelize, DataTypes) => {
       accessToken: {
         field: 'access_token',
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
       refreshToken: {
         field: 'refresh_token',
         allowNull: false,
-        type: DataTypes.STRING,
+        type: DataTypes.TEXT,
       },
     },
     {

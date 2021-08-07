@@ -28,12 +28,12 @@ module.exports = {
       accessToken: {
         field: 'access_token',
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       refreshToken: {
         field: 'refresh_token',
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       createdAt: {
         field: "created_at",
