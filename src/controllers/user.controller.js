@@ -5,13 +5,14 @@ const { User } = require('../db/models/');
 module.exports.createUser = async (req, res, next) => {
   try {
     const {
-      body: { user },
+      body: { user, ua },
     } = req;
     // console.log('register user', user);
 
     // TODO tokens
     const newUser = await User.create({
       ...user,
+      createdByIP: ua.ip,
       ...{
         accessToken: 'access asdQWE',
         refreshToken: 'refresh asdQWE',
