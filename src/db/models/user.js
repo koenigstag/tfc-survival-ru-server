@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
       return bcrypt.compare(password, this.getDataValue('password'));
     }
   }
+  // TODO regexp
   User.init(
     {
       nickname: {
@@ -36,6 +37,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         // like: /^$/,
         isUnique: function (value) {
+          // TODO tests
           User.findAllAndCount({
             attributes: ['email'],
             where: {
@@ -54,6 +56,7 @@ module.exports = (sequelize, DataTypes) => {
       discord: {
         allowNull: true,
         isUnique: function (value) {
+          // TODO tests
           User.findAllAndCount({
             attributes: ['discord'],
             where: {

@@ -38,7 +38,7 @@ module.exports.loginUser = async (req, res, next) => {
     const user = await User.findOne({ where: { nickname } });
 
     if (!user) {
-      return next(new EmptyResultError('Cant find user with given nickname'));
+      return next(new EmptyResultError('Invalid nickname or password'));
     }
 
     res.status(200).send({ data: user });
