@@ -13,7 +13,7 @@ module.exports = {
         unique: true,
         type: Sequelize.STRING
       },
-      passwordHash: {
+      password: {
         field: "password_hash",
         allowNull: false,
         type: Sequelize.TEXT
