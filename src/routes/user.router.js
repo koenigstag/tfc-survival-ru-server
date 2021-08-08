@@ -1,6 +1,6 @@
 const router = require('express').Router();
-// const checkAccessToken = require('../middlewares/checkAccessToken');
-// const decryptPassTransfer = require('../middlewares/decryptPassTransfer');
+// const { checkTokens } = require('../middlewares/checkTokens');
+const decryptPassTransfer = require('../middlewares/decryptPassTransfer');
 const {
   createUser,
   getUser,
@@ -12,8 +12,8 @@ router.route('/:nickname/:accessToken').get(/*checkAccessToken,*/ getUser);
 
 router
   .route('/:nickname')
-  .post(/*decryptPassTransfer, checkAccessToken, */ loginUser);
+  .post(decryptPassTransfer, /*checkAccessToken, */ loginUser);
 
-router.route('/').post(/*decryptPassTransfer, */ createUser);
+router.route('/').post(decryptPassTransfer, createUser);
 
 module.exports = router;
