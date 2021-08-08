@@ -5,8 +5,15 @@ module.exports = decryptPassTransfer = (req, res, next) => {
     const {
       body: { passwordCrypt },
     } = req;
+    // console.log('Crypt', passwordCrypt);
 
     const password = decrypt(passwordCrypt);
+
+    // console.log('password', password);
+
+    if (req.body.user === undefined) {
+      req.body.user = {};
+    }
 
     req.body.user.password = password;
     next();
