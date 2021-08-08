@@ -32,7 +32,6 @@ module.exports.loginUser = async (req, res, next) => {
   try {
     const {
       params: { nickname },
-      // passwordHash
     } = req;
 
     const user = await User.findOne({ where: { nickname } });
