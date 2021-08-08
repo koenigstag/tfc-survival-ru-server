@@ -7,6 +7,7 @@ module.exports.createUser = async (req, res, next) => {
     const {
       body: { user },
     } = req;
+    // console.log('register user', user);
 
     // TODO tokens
     const newUser = await User.create({
@@ -33,6 +34,7 @@ module.exports.loginUser = async (req, res, next) => {
     const {
       params: { nickname },
     } = req;
+    // console.log('login', nickname);
 
     const user = await User.findOne({ where: { nickname } });
 
@@ -50,8 +52,8 @@ module.exports.getUser = async (req, res, next) => {
   try {
     const {
       params: { nickname },
-      token,
     } = req;
+    // console.log('get user', nickname);
 
     const user = await User.findOne({ where: { nickname } });
 
