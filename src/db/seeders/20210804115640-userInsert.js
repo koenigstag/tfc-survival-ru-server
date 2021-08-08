@@ -11,6 +11,7 @@ module.exports = {
         email: 'email' + i + '@mail.com',
         accessToken: 'asdQWE access',
         refreshToken: 'asdQWE refresh',
+        createdByIP: 'localhost',
       });
     }
     await User.bulkCreate(users);

@@ -35,6 +35,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.TEXT,
       },
+      createdByIP: {
+        field: 'created_by_ip',
+        allowNull: false,
+        type: Sequelize.STRING
+      },
       createdAt: {
         field: "created_at",
         allowNull: false,

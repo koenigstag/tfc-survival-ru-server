@@ -82,6 +82,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         type: DataTypes.TEXT,
       },
+      createdByIP: {
+        field: 'created_by_ip',
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
     },
     {
       sequelize,
