@@ -20,9 +20,15 @@ module.exports = (err, req, res, next) => {
   let result = false;
 
   console.log('\nNew entry to error handlers with class:', err.constructor);
+  console.log(`And message: ${err.message}`);
+
+  // Case TypeError
+  if (!result || err instanceof TypeError) {
+    result = handleTypeError(err, req, res, next);
+  }
 
   // Case Sequelize
-  if (err instanceof Sequelize.BaseError) {
+  if (!result || err instanceof Sequelize.BaseError) {
     result = handleSequelizeErrors(err, req, res, next);
   }
 
@@ -37,6 +43,11 @@ module.exports = (err, req, res, next) => {
   console.log(
     `Error handler response was sent with status code <${result.status}> and message: ${result.message}\n`
   );
+};
+
+const handleTypeError = (err, req, res, next) => {
+  switch (err.message) {
+  }
 };
 
 const handleSequelizeErrors = (err, req, res, next) => {
