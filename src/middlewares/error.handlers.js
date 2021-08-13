@@ -32,6 +32,7 @@ module.exports = (err, req, res, next) => {
     result = handleSequelizeErrors(err, req, res, next);
   }
 
+  console.log(result);
   console.log('Error was handled: ' + Boolean(result));
   if (Boolean(result) === false) {
     result = {
@@ -52,10 +53,17 @@ const handleTypeError = (err, req, res, next) => {
 
 const handleSequelizeErrors = (err, req, res, next) => {
   if (err instanceof Sequelize.EmptyResultError) {
+    console.log('test');
     switch (err.constructor) {
       case Sequelize.EmptyResultError: {
         switch (err.message) {
           case 'Cant find user with given nickname': {
+            return {
+              status: CommonHttpErrorCodes.BadRequest,
+              message: err.message,
+            };
+          }
+          case 'Invalid nickname or password': {
             return {
               status: CommonHttpErrorCodes.BadRequest,
               message: err.message,
