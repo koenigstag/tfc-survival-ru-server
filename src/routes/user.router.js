@@ -8,7 +8,7 @@ const {
 } = require('../controllers/user.controller.js');
 
 // TODO middlewares
-router.route('/:nickname/:accessToken').get(/*checkAccessToken,*/ getUser);
+// router.route('/:nickname/:accessToken').get(/*checkAccessToken,*/ getUser);
 
 router
   .route('/:nickname')
