@@ -122,3 +122,37 @@ module.exports.changePass = async (req, res, next) => {
     next(e);
   }
 };
+
+module.exports.linkDiscord = async (req, res, next) => {
+  try {
+    const {
+      params: { nickname },
+      body: { discord },
+    } = req;
+    // console.log('get user', nickname);
+
+    // get user
+    let user = await User.findOne({ where: { nickname } });
+    if (!user) {
+      return next(new EmptyResultError('Cant find user with given nickname'));
+    }
+
+    // update to new discord
+    await User.findOne({ where: { nickname } }).then(result => {
+      result.update({
+        discord,
+      });
+    });
+
+    // get updated user
+    user = await User.findOne({ where: { nickname } });
+    if (!user) {
+      return next(new EmptyResultError('Cant find user with given nickname'));
+    }
+
+    res.status(200).send({ data: _.pick(user, sendDataFields) });
+  } catch (e) {
+    console.dir(e);
+    next(e);
+  }
+};

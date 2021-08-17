@@ -6,6 +6,7 @@ const {
   getUser,
   loginUser,
   changePass,
+  linkDiscord,
 } = require('../controllers/user.controller.js');
 
 // TODO middlewares
@@ -15,6 +16,8 @@ router
   .route('/:nickname')
   .post(decryptPassTransfer, /*checkAccessToken, */ loginUser)
   .patch(decryptPassTransfer, /*checkAccessToken, */ changePass);
+
+router.route('/discord/:nickname').patch(linkDiscord);
 
 router.route('/').post(decryptPassTransfer, createUser);
 
