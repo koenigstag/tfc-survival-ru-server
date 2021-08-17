@@ -15,6 +15,7 @@ module.exports.createUser = async (req, res, next) => {
     // console.log('register user', user);
 
     // TODO tokens
+    // TODO ua check and restrict more than 3 accs
     const newUser = _.pick(
       await User.create({
         ...user,
@@ -50,10 +51,14 @@ module.exports.loginUser = async (req, res, next) => {
       where: { nickname },
     });
 
-    const passwordCompare = await bcrypt.compare(password, user.password);
+    // if user does not exists in database
+    if (!user) {
+      return next(new EmptyResultError('Invalid nickname or password'));
+    }
 
-    if (!user || !passwordCompare) {
-      console.log(passwordCompare);
+    const passwordCompare = await bcrypt.compare(password, user.password);
+    // if password is invalid
+    if (!passwordCompare) {
       return next(new EmptyResultError('Invalid nickname or password'));
     }
 
