@@ -6,7 +6,7 @@ const { SALT_ROUNDS } = require('../../constants');
 async function hashPassword (user, options) {
   if (user.changed('password')) {
     const { password } = user;
-    if (!/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{6,}$/.test(password)) {
+    if (!/^(?=.*\d)(?=.*[a-z])[0-9a-z]{6,}$/i.test(password)) {
       throw new ValidationError('Password must match the regex');
     }
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
