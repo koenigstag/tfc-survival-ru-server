@@ -5,6 +5,7 @@ const {
   createUser,
   getUser,
   loginUser,
+  changePass,
 } = require('../controllers/user.controller.js');
 
 // TODO middlewares
@@ -12,7 +13,8 @@ const {
 
 router
   .route('/:nickname')
-  .post(decryptPassTransfer, /*checkAccessToken, */ loginUser);
+  .post(decryptPassTransfer, /*checkAccessToken, */ loginUser)
+  .patch(decryptPassTransfer, /*checkAccessToken, */ changePass);
 
 router.route('/').post(decryptPassTransfer, createUser);
 
