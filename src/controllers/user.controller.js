@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const bcrypt = require('bcrypt');
 const createError = require('http-errors');
 const { EmptyResultError } = require('sequelize');
 const { User } = require('../db/models/');
@@ -9,6 +10,7 @@ module.exports.createUser = async (req, res, next) => {
   try {
     const {
       body: { user, ua },
+      password,
     } = req;
     // console.log('register user', user);
 
@@ -16,6 +18,7 @@ module.exports.createUser = async (req, res, next) => {
     const newUser = _.pick(
       await User.create({
         ...user,
+        password,
         createdByIP: ua.ip,
         ...{
           accessToken: 'access asdQWE',
@@ -39,6 +42,7 @@ module.exports.loginUser = async (req, res, next) => {
   try {
     const {
       params: { nickname },
+      password,
     } = req;
     // console.log('login', nickname);
 
@@ -46,7 +50,10 @@ module.exports.loginUser = async (req, res, next) => {
       where: { nickname },
     });
 
-    if (!user) {
+    const passwordCompare = await bcrypt.compare(password, user.password);
+
+    if (!user || !passwordCompare) {
+      console.log(passwordCompare);
       return next(new EmptyResultError('Invalid nickname or password'));
     }
 
@@ -63,6 +70,37 @@ module.exports.getUser = async (req, res, next) => {
     } = req;
     // console.log('get user', nickname);
 
+    const user = await User.findOne({ where: { nickname } });
+
+    if (!user) {
+      return next(new EmptyResultError('Cant find user with given nickname'));
+    }
+
+    res.status(200).send({ data: _.pick(user, sendDataFields) });
+  } catch (e) {
+    console.dir(e);
+    next(e);
+  }
+};
+
+module.exports.changePass = async (req, res, next) => {
+  try {
+    const {
+      params: { nickname },
+      password,
+    } = req;
+    // console.log('get user', nickname);
+
+    await User.findOne({ where: { nickname } })
+      .then(result => {
+        result.update({
+          password,
+        });
+      })
+      .catch(err => {
+        return next(new EmptyResultError('Cant find user with given nickname'));
+      });
+      
     const user = await User.findOne({ where: { nickname } });
 
     if (!user) {
