@@ -88,9 +88,24 @@ module.exports.changePass = async (req, res, next) => {
     const {
       params: { nickname },
       password,
+      body: { oldpassword },
     } = req;
     // console.log('get user', nickname);
 
+    // get user with old password
+    const user = await User.findOne({ where: { nickname } });
+    if (!user) {
+      return next(new EmptyResultError('Cant find user with given nickname'));
+    }
+
+    // check - compare password
+    const passwordCompare = await bcrypt.compare(oldpassword, user.password);
+    if (!passwordCompare) {
+      console.log(passwordCompare);
+      return next(new EmptyResultError('Invalid nickname or password'));
+    }
+
+    // update to new password
     await User.findOne({ where: { nickname } })
       .then(result => {
         result.update({
@@ -100,12 +115,6 @@ module.exports.changePass = async (req, res, next) => {
       .catch(err => {
         return next(new EmptyResultError('Cant find user with given nickname'));
       });
-      
-    const user = await User.findOne({ where: { nickname } });
-
-    if (!user) {
-      return next(new EmptyResultError('Cant find user with given nickname'));
-    }
 
     res.status(200).send({ data: _.pick(user, sendDataFields) });
   } catch (e) {
