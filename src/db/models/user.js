@@ -36,39 +36,42 @@ module.exports = (sequelize, DataTypes) => {
       email: {
         allowNull: false,
         // like: /^$/,
-        isUnique: function (value) {
-          // TODO tests
-          User.findAllAndCount({
-            attributes: ['email'],
-            where: {
-              email: {
-                [Op.eq]: value,
+        validate: {
+          isUnique: async function (value) {
+            // TODO tests
+            const users = await User.findAll({
+              attributes: ['email'],
+              where: {
+                email: value,
               },
-            },
-          }).done(function (error, result) {
-            if (result.count >= 3) {
+            });
+
+            if (users.length >= 3) {
               throw new Error('Only 3 accounts permitted on 1 email');
             }
-          });
+          },
         },
         type: DataTypes.STRING,
       },
       discord: {
         allowNull: true,
-        isUnique: function (value) {
-          // TODO tests
-          User.findAllAndCount({
-            attributes: ['discord'],
-            where: {
-              discord: {
-                [Op.eq]: value,
+        validate: {
+          isUnique: async function (value) {
+            if (!value) {
+              return;
+            }
+            // TODO tests
+            const users = User.findAll({
+              attributes: ['discord'],
+              where: {
+                discord: value,
               },
-            },
-          }).done(function (error, result) {
-            if (result.count >= 3) {
+            });
+
+            if (users.length >= 3) {
               throw new Error('Only 3 accounts permitted on 1 discord');
             }
-          });
+          },
         },
         type: DataTypes.STRING,
       },
