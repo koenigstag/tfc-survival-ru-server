@@ -82,6 +82,25 @@ const handleSequelizeErrors = (err, req, res, next) => {
   if (err instanceof Sequelize.ValidationError) {
     switch (err.constructor) {
       case Sequelize.ValidationError: {
+        switch (err.errors[0].validatorKey) {
+          case 'isUnique': {
+            switch (err.errors[0].message) {
+              case 'Only 3 accounts permitted on 1 email': {
+                return {
+                  status: CommonHttpErrorCodes.BadRequest,
+                  message: err.errors[0].message,
+                };
+              }
+              case 'Only 3 accounts permitted on 1 discord': {
+                return {
+                  status: CommonHttpErrorCodes.BadRequest,
+                  message: err.errors[0].message,
+                };
+              }
+            }
+            break;
+          }
+        }
         break;
       }
       case Sequelize.UniqueConstraintError: {
