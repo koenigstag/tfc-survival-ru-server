@@ -15,7 +15,7 @@ module.exports = decryptPassTransfer = (req, res, next) => {
       req.body.user = {};
     }
 
-    req.body.user.password = password;
+    req.password = password;
     next();
   } catch (error) {
     next(error);
