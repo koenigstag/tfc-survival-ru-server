@@ -53,7 +53,6 @@ const handleTypeError = (err, req, res, next) => {
 
 const handleSequelizeErrors = (err, req, res, next) => {
   if (err instanceof Sequelize.EmptyResultError) {
-    console.log('test');
     switch (err.constructor) {
       case Sequelize.EmptyResultError: {
         switch (err.message) {
