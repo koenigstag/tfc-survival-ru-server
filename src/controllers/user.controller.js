@@ -106,7 +106,6 @@ module.exports.changePass = async (req, res, next) => {
     // check - compare password
     const passwordCompare = await bcrypt.compare(oldpassword, user.password);
     if (!passwordCompare) {
-      console.log(passwordCompare);
       return next(new EmptyResultError('Invalid nickname or password'));
     }
 
@@ -137,7 +136,7 @@ module.exports.linkDiscord = async (req, res, next) => {
     // console.log('get user', nickname);
 
     // get user
-    let user = await User.findOne({ where: { nickname } });
+    const user = await User.findOne({ where: { nickname } });
     if (!user) {
       return next(new EmptyResultError('Cant find user with given nickname'));
     }
@@ -150,12 +149,13 @@ module.exports.linkDiscord = async (req, res, next) => {
     });
 
     // get updated user
-    user = await User.findOne({ where: { nickname } });
-    if (!user) {
+    const updatedUser = await User.findOne({ where: { nickname } });
+    if (!updatedUser) {
       return next(new EmptyResultError('Cant find user with given nickname'));
     }
+    console.log(updatedUser);
 
-    res.status(200).send({ data: _.pick(user, sendDataFields) });
+    res.status(200).send({ data: _.pick(updatedUser, sendDataFields) });
   } catch (e) {
     console.dir(e);
     next(e);

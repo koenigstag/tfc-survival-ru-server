@@ -55,6 +55,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         type: DataTypes.STRING,
       },
+      // TODO confirmedEmail field
       discord: {
         allowNull: true,
         is: /^.{2,32}#\d{4}$/,
