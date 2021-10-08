@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const { log } = require('./misc/logger');
 const apiRouter = require('./routes');
 const errorHandlers = require('./middlewares/error.handlers');
 const selfErrorHandles = require('./middlewares/selfError.handlers');
@@ -15,7 +16,7 @@ app.use('/static', express.static('public'));
 // DEBUG zone
 app.use((req, res, next) => {
   // DEBUG
-  // console.log('New Request: ', req);
+  log('New Request: ', req);
   next();
 });
 

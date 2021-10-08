@@ -1,11 +1,11 @@
+const { log } = require('../misc/logger');
 const { UserMedia } = require('../db/models/');
 
 module.exports.setSkin = async (req, res, next) => {
   try {
     // TODO db set
     const { file } = req;
-    console.log('file');
-    console.log(file);
+    // log('new skin', file);
 
     const skinSrc = 'skins/' + file.filename;
 
@@ -19,8 +19,7 @@ module.exports.setCape = async (req, res, next) => {
   try {
     // TODO db set
     const { file } = req;
-    console.log('file');
-    // console.log(file);
+    log('new cape', file);
 
     const capeSrc = 'capes/' + file.filename;
 

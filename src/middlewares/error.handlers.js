@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const { log } = require('./../misc/logger');
 
 const CommonHttpErrorCodes = {
   MovedPermanently: 301,
@@ -19,9 +20,9 @@ const newResponseErrorObject = message => ({ error: { message } });
 module.exports = (err, req, res, next) => {
   let result = false;
 
-  // console.log(err, '\n');
-  console.log('\nNew entry to error handlers with class:', err.constructor);
-  console.log(`And message: ${err.message}`);
+  log(err, '\n');
+  log('\nNew entry to error handlers with class:', err.constructor);
+  log(`And message: ${err.message}`);
 
   // Case TypeError
   if (!result || err instanceof TypeError) {
@@ -33,8 +34,8 @@ module.exports = (err, req, res, next) => {
     result = handleSequelizeErrors(err, req, res, next);
   }
 
-  console.log(result);
-  console.log('Error was handled: ' + Boolean(result));
+  log(result);
+  log('Error was handled: ' + Boolean(result));
   if (Boolean(result) === false) {
     result = {
       status: CommonHttpErrorCodes.InternalServerError,
@@ -42,7 +43,7 @@ module.exports = (err, req, res, next) => {
     };
   }
   res.status(result.status).send(newResponseErrorObject(result.message));
-  console.log(
+  log(
     `Error handler response was sent with status code <${result.status}> and message: ${result.message}\n`
   );
 };
