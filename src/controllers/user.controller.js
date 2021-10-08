@@ -12,28 +12,30 @@ module.exports.createUser = async (req, res, next) => {
       body: { user, ua },
       password,
     } = req;
-    // console.log('register user', user);
 
-    // TODO tokens
-    // TODO ua check and restrict more than 3 accs
-    const newUser = _.pick(
-      await User.create({
-        ...user,
-        password,
-        createdByIP: ua.ip,
-        ...{
-          accessToken: 'access asdQWE',
-          refreshToken: 'refresh asdQWE',
-        },
-      }),
-      sendDataFields
-    );
+    // create new user
+    const createdUser = await User.create({
+      ...user,
+      password,
+      // TODO ua check and restrict more than 3 accs
+      createdByIP: ua.ip,
+      // TODO tokens
+      ...{
+        accessToken: 'access asdQWE',
+        refreshToken: 'refresh asdQWE',
+      },
+    });
 
-    if (!newUser) {
+    // if user was not created
+    if (!createdUser) {
       return next(new EmptyResultError('Cant create user with that data'));
     }
 
-    res.status(200).send({ data: _.pick(newUser, sendDataFields) });
+    // remove security fields from user object
+    const newUser = _.pick(createdUser, sendDataFields);
+
+    // send response
+    res.status(200).send({ data: newUser });
   } catch (e) {
     next(e);
   }
@@ -45,8 +47,8 @@ module.exports.loginUser = async (req, res, next) => {
       params: { nickname },
       password,
     } = req;
-    // console.log('login', nickname);
 
+    // finc user by nickname
     const user = await User.findOne({
       where: { nickname },
     });
@@ -56,12 +58,14 @@ module.exports.loginUser = async (req, res, next) => {
       return next(new EmptyResultError('Invalid nickname or password'));
     }
 
+    // compare password hash
     const passwordCompare = await bcrypt.compare(password, user.password);
     // if password is invalid
     if (!passwordCompare) {
       return next(new EmptyResultError('Invalid nickname or password'));
     }
 
+    // send response
     res.status(200).send({ data: _.pick(user, sendDataFields) });
   } catch (e) {
     next(e);
@@ -73,14 +77,16 @@ module.exports.getUser = async (req, res, next) => {
     const {
       params: { nickname },
     } = req;
-    // console.log('get user', nickname);
 
+    // get user from db
     const user = await User.findOne({ where: { nickname } });
 
+    // if user not found
     if (!user) {
       return next(new EmptyResultError('Cant find user with given nickname'));
     }
 
+    // send response
     res.status(200).send({ data: _.pick(user, sendDataFields) });
   } catch (e) {
     console.dir(e);
@@ -95,7 +101,6 @@ module.exports.changePass = async (req, res, next) => {
       password,
       body: { oldpassword },
     } = req;
-    // console.log('get user', nickname);
 
     // get user with old password
     const user = await User.findOne({ where: { nickname } });
@@ -120,6 +125,7 @@ module.exports.changePass = async (req, res, next) => {
         return next(new EmptyResultError('Cant find user with given nickname'));
       });
 
+    // send response
     res.status(200).send({ data: _.pick(user, sendDataFields) });
   } catch (e) {
     console.dir(e);
@@ -133,7 +139,6 @@ module.exports.linkDiscord = async (req, res, next) => {
       params: { nickname },
       body: { discord },
     } = req;
-    // console.log('get user', nickname);
 
     // get user
     const user = await User.findOne({ where: { nickname } });
@@ -153,8 +158,8 @@ module.exports.linkDiscord = async (req, res, next) => {
     if (!updatedUser) {
       return next(new EmptyResultError('Cant find user with given nickname'));
     }
-    console.log(updatedUser);
 
+    // send response
     res.status(200).send({ data: _.pick(updatedUser, sendDataFields) });
   } catch (e) {
     console.dir(e);
