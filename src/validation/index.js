@@ -1,4 +1,4 @@
-import yup from 'yup';
+const yup = require('yup');
 
 // regexp
 const usernameRegex = /^[a-z0-9_]{3,16}$/i;
@@ -16,7 +16,7 @@ const tokenScheme = yup.string().matches(tokenRegex);
 const ipScheme = yup.string().matches(ipRegex);
 const skinFilenameScheme = yup.string().matches(skinFilenameRegex);
 
-export default {
+module.exports = {
   regex: {
     usernameRegex,
     emailRegex,
