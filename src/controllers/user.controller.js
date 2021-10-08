@@ -1,7 +1,7 @@
+// const createError = require('http-errors');
+const { EmptyResultError } = require('sequelize');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
-const createError = require('http-errors');
-const { EmptyResultError } = require('sequelize');
 const { User } = require('../db/models/');
 
 const sendDataFields = ['nickname', 'email', 'discord', 'createdByIP'];

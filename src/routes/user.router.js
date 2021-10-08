@@ -9,16 +9,17 @@ const {
   linkDiscord,
 } = require('../controllers/user.controller.js');
 
-// TODO middlewares
-// router.route('/:nickname/:accessToken').get(/*checkAccessToken,*/ getUser);
+router.route('/').post(decryptPassTransfer, createUser);
 
 router
   .route('/:nickname')
   .post(decryptPassTransfer, /*checkAccessToken, */ loginUser)
   .patch(decryptPassTransfer, /*checkAccessToken, */ changePass);
 
-router.route('/discord/:nickname').patch(linkDiscord);
+// TODO middlewares
+// router.route('/:nickname/:accessToken').get(/*checkAccessToken,*/ getUser);
 
-router.route('/').post(decryptPassTransfer, createUser);
+// TODO security
+router.route('/discord/:nickname').patch(linkDiscord);
 
 module.exports = router;
