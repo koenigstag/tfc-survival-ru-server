@@ -1,6 +1,9 @@
 'use strict';
 const { Model, ValidationError } = require('sequelize');
 const bcrypt = require('bcrypt');
+const {
+  regex: { usernameRegex, emailRegex, discordRegex, tokenRegex, ipRegex },
+} = require('../../validation');
 const { SALT_ROUNDS } = require('../../constants');
 
 async function hashPassword (user, options) {
@@ -28,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       nickname: {
         allowNull: false,
         unique: true,
-        is: /^[a-z0-9_]{3,16}$/i,
+        is: usernameRegex,
         type: DataTypes.STRING,
       },
       password: {
@@ -38,7 +41,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       email: {
         allowNull: false,
-        is: /^\S+@\S+\.\S+$/,
+        is: emailRegex,
         validate: {
           isUnique: async function (value) {
             const users = await User.findAll({
@@ -58,7 +61,7 @@ module.exports = (sequelize, DataTypes) => {
       // TODO confirmedEmail field
       discord: {
         allowNull: true,
-        is: /^.{2,32}#\d{4}$/,
+        is: discordRegex,
         validate: {
           isUnique: async function (value) {
             if (!value) {
@@ -79,19 +82,19 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       accessToken: {
-        is: /^\$2[a-z0-9.\/$]{58}$/i,
+        is: tokenRegex,
         field: 'access_token',
         allowNull: false,
         type: DataTypes.TEXT,
       },
       refreshToken: {
-        is: /^\$2[a-z0-9.\/$]{58}$/i,
+        is: tokenRegex,
         field: 'refresh_token',
         allowNull: false,
         type: DataTypes.TEXT,
       },
       createdByIP: {
-        is: /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/,
+        is: ipRegex,
         field: 'created_by_ip',
         allowNull: false,
         // TODO WIP tests

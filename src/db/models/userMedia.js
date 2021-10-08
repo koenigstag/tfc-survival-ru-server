@@ -1,5 +1,8 @@
 'use strict';
-const { Model, ValidationError } = require('sequelize');
+const { Model } = require('sequelize');
+const {
+  regex: { skinFilenameRegex },
+} = require('../../validation');
 
 module.exports = (sequelize, DataTypes) => {
   class UserMedia extends Model {
@@ -12,14 +15,14 @@ module.exports = (sequelize, DataTypes) => {
         field: 'skin_src',
         allowNull: true,
         unique: true,
-        is: /^[a-z0-9_\-\/]{3,16}.png$/i,
+        is: skinFilenameRegex,
         type: DataTypes.STRING,
       },
       capeSrc: {
         field: 'cape_src',
         allowNull: true,
         unique: true,
-        is: /^[a-z0-9_\-\/]{3,16}.png$/i,
+        is: skinFilenameRegex,
         type: DataTypes.STRING,
       },
     },
