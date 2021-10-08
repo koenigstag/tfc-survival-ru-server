@@ -94,6 +94,21 @@ module.exports = (sequelize, DataTypes) => {
         is: /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/,
         field: 'created_by_ip',
         allowNull: false,
+        // TODO WIP tests
+        validate: {
+          isUnique: async function (value) {
+            const users = await User.findAll({
+              attributes: ['created_by_ip'],
+              where: {
+                created_by_ip: value,
+              },
+            });
+
+            if (users.length >= 3) {
+              throw new Error('Only 3 accounts permitted');
+            }
+          },
+        },
         type: DataTypes.STRING,
       },
     },
