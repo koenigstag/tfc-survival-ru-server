@@ -16,10 +16,10 @@ router
   .post(decryptPassTransfer, /*checkAccessToken, */ loginUser)
   .patch(decryptPassTransfer, /*checkAccessToken, */ changePass);
 
-// TODO middlewares
+// TODO add security middlewares
 // router.route('/:nickname/:accessToken').get(/*checkAccessToken,*/ getUser);
 
-// TODO security
-router.route('/discord/:nickname').patch(linkDiscord);
+// TODO add security middlewares
+router.route('/discord/:nickname').patch(/*checkAccessToken,*/ linkDiscord);
 
 module.exports = router;

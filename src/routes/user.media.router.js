@@ -20,7 +20,7 @@ const uploadCape = multer({
   }),
 });
 
-// TODO security
+// TODO add security middlewares
 router
   .route('/skin/:username')
   .post(/*checkAccessToken, */ uploadSkin.single('skin'), setSkin);

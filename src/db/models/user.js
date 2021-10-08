@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         type: DataTypes.STRING,
       },
-      // TODO confirmedEmail field
+      // TODO add confirmedEmail field
       discord: {
         allowNull: true,
         is: discordRegex,
