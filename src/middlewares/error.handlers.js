@@ -86,6 +86,12 @@ const handleSequelizeErrors = (err, req, res, next) => {
         switch (err.errors[0].validatorKey) {
           case 'isUnique': {
             switch (err.errors[0].message) {
+              case 'connect ECONNREFUSED 127.0.0.1:5432': {
+                return {
+                  status: CommonHttpErrorCodes.ServiceUnavailable,
+                  message: 'Server database is switched off',
+                };
+              }
               case 'Only 3 accounts permitted on 1 email': {
                 return {
                   status: CommonHttpErrorCodes.BadRequest,
@@ -93,6 +99,12 @@ const handleSequelizeErrors = (err, req, res, next) => {
                 };
               }
               case 'Only 3 accounts permitted on 1 discord': {
+                return {
+                  status: CommonHttpErrorCodes.BadRequest,
+                  message: err.errors[0].message,
+                };
+              }
+              case 'Only 3 accounts permitted on 1 ip address': {
                 return {
                   status: CommonHttpErrorCodes.BadRequest,
                   message: err.errors[0].message,
