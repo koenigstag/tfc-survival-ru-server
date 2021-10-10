@@ -6,7 +6,7 @@ module.exports = ({ dest, mimetype, fileSize, files }) => {
     storage: multer.diskStorage({
       destination: (req, file, cb) =>
         cb(null, path.resolve(__dirname, '../../', dest)),
-      filename: (req, file, cb) => cb(null, req.params.username + '.png'),
+      filename: (req, file, cb) => cb(null, req.params.nickname + '.png'),
     }),
     fileFilter: (req, file, cb) =>
       file.mimetype !== mimetype
