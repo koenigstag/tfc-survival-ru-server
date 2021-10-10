@@ -20,7 +20,7 @@ const newResponseErrorObject = message => ({ error: { message } });
 module.exports = (err, req, res, next) => {
   let result = false;
 
-  log(err, '\n');
+  // log(err, '\n');
   log('\nNew entry to error handlers with class:', err.constructor);
   log(`And message: ${err.message}`);
 

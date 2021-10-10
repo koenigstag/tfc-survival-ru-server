@@ -16,7 +16,7 @@ app.use('/static', express.static('public'));
 // DEBUG zone
 app.use((req, res, next) => {
   // DEBUG
-  log('New Request: ', req);
+  // log('New Request: ', req);
   next();
 });
 

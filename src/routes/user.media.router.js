@@ -10,7 +10,7 @@ const uploadSkin = multer({
     fileSize: 800000,
     files: 1,
   }),
-});
+}).single('file');
 const uploadCape = multer({
   ...multerOptions({
     dest: 'public/capes',
@@ -18,15 +18,15 @@ const uploadCape = multer({
     fileSize: 800000,
     files: 1,
   }),
-});
+}).single('file');
 
 // TODO add security middlewares
 router
-  .route('/skin/:username')
-  .post(/*checkAccessToken, */ uploadSkin.single('skin'), setSkin);
+  .route('/skin/:nickname')
+  .post(/*checkAccessToken, */ uploadSkin, setSkin);
 
 router
-  .route('/cape/:username')
-  .post(/*checkAccessToken, */ uploadCape.single('cape'), setCape);
+  .route('/cape/:nickname')
+  .post(/*checkAccessToken, */ uploadCape, setCape);
 
 module.exports = router;
