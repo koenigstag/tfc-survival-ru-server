@@ -2,7 +2,7 @@
 const { Model, ValidationError } = require('sequelize');
 const bcrypt = require('bcrypt');
 const {
-  regex: { usernameRegex, emailRegex, discordRegex, tokenRegex, ipRegex },
+  regex: { nicknameRegex, emailRegex, discordRegex, tokenRegex, ipRegex },
 } = require('../../validation');
 const { SALT_ROUNDS } = require('../../constants');
 
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       nickname: {
         allowNull: false,
         unique: true,
-        is: usernameRegex,
+        is: nicknameRegex,
         type: DataTypes.STRING,
       },
       password: {
