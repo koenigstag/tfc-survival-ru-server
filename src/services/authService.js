@@ -2,7 +2,7 @@ const JwtService = require('./jwtService');
 const { MAX_DEVICE_AMOUNT } = require('../constants');
 const prepareUser = require('../utils/prepareUser');
 
-module.exports.createSession = async user => {
+module.exports.createSession = async (user, ua = null, fingerprint = null) => {
   const tokenPair = await JwtService.createTokenPair(user);
 
   if ((await user.countRefreshTokens()) >= MAX_DEVICE_AMOUNT) {
@@ -11,7 +11,7 @@ module.exports.createSession = async user => {
     });
     await oldestToken.update({ value: tokenPair.refresh });
   } else {
-    await user.createRefreshToken({ value: tokenPair.refresh });
+    await user.createRefreshToken({ value: tokenPair.refresh, ua, fingerprint });
   }
   return { tokenPair, user: prepareUser(user) };
 };

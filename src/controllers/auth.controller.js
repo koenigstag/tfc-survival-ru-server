@@ -5,11 +5,12 @@ const { User, RefreshToken } = require('../db/models');
 module.exports.signIn = async (req, res, next) => {
   try {
     const {
-      body: { email, password },
+      body: { nickname },
+      password,
     } = req;
 
     const user = await User.findOne({
-      where: { email },
+      where: { nickname },
     });
 
     if (user && (await user.comparePassword(password))) {
@@ -18,17 +19,29 @@ module.exports.signIn = async (req, res, next) => {
     }
     next(createHttpError(401, 'Invalid credentials'));
   } catch (error) {
-    console.log('catched ,', error);
     next(error);
   }
 };
 
 module.exports.signUp = async (req, res, next) => {
   try {
-    const { body } = req;
-    const user = await User.create(body);
-    if (user) {
-      const data = await AuthService.createSession(user);
+    const {
+      body: { user, ua = {}, fingerprint = {} },
+      password,
+    } = req;
+
+    const createdUser = await User.create({
+      ...user,
+      password,
+      createdByIP: ua.ip,
+    });
+
+    if (createdUser) {
+      const data = await AuthService.createSession(
+        createdUser,
+        JSON.stringify(ua),
+        JSON.stringify(fingerprint)
+      );
       return res.status(201).send({ data });
     }
   } catch (error) {
