@@ -1,3 +1,4 @@
+const { HttpError } = require('http-errors');
 const Sequelize = require('sequelize');
 const { log } = require('./../misc/logger');
 
@@ -29,6 +30,11 @@ module.exports = (err, req, res, next) => {
     result = handleTypeError(err, req, res, next);
   }
 
+  // Case Http error
+  if (!result || err instanceof HttpError) {
+    result = handleHttpErrors(err, req, res, next);
+  }
+
   // Case Sequelize
   if (!result || err instanceof Sequelize.BaseError) {
     result = handleSequelizeErrors(err, req, res, next);
@@ -51,6 +57,13 @@ module.exports = (err, req, res, next) => {
 const handleTypeError = (err, req, res, next) => {
   switch (err.message) {
   }
+};
+
+const handleHttpErrors = (err, req, res, next) => {
+  return {
+    status: err.status,
+    message: err.message,
+  };
 };
 
 const handleSequelizeErrors = (err, req, res, next) => {
@@ -83,38 +96,43 @@ const handleSequelizeErrors = (err, req, res, next) => {
   if (err instanceof Sequelize.ValidationError) {
     switch (err.constructor) {
       case Sequelize.ValidationError: {
-        switch (err.errors[0].validatorKey) {
-          case 'isUnique': {
-            switch (err.errors[0].message) {
-              case 'connect ECONNREFUSED 127.0.0.1:5432': {
-                return {
-                  status: CommonHttpErrorCodes.ServiceUnavailable,
-                  message: 'Server database is switched off',
-                };
+        if (err.errors.length) {
+          switch (err.errors[0].validatorKey) {
+            case 'isUnique': {
+              switch (err.errors[0].message) {
+                case 'connect ECONNREFUSED 127.0.0.1:5432': {
+                  return {
+                    status: CommonHttpErrorCodes.ServiceUnavailable,
+                    message: 'Server database is switched off',
+                  };
+                }
+                case 'Only 3 accounts permitted on 1 email': {
+                  return {
+                    status: CommonHttpErrorCodes.BadRequest,
+                    message: err.errors[0].message,
+                  };
+                }
+                case 'Only 3 accounts permitted on 1 discord': {
+                  return {
+                    status: CommonHttpErrorCodes.BadRequest,
+                    message: err.errors[0].message,
+                  };
+                }
+                case 'Only 3 accounts permitted on 1 ip address': {
+                  return {
+                    status: CommonHttpErrorCodes.BadRequest,
+                    message: err.errors[0].message,
+                  };
+                }
               }
-              case 'Only 3 accounts permitted on 1 email': {
-                return {
-                  status: CommonHttpErrorCodes.BadRequest,
-                  message: err.errors[0].message,
-                };
-              }
-              case 'Only 3 accounts permitted on 1 discord': {
-                return {
-                  status: CommonHttpErrorCodes.BadRequest,
-                  message: err.errors[0].message,
-                };
-              }
-              case 'Only 3 accounts permitted on 1 ip address': {
-                return {
-                  status: CommonHttpErrorCodes.BadRequest,
-                  message: err.errors[0].message,
-                };
-              }
+              break;
             }
-            break;
           }
         }
-        break;
+        return {
+          status: CommonHttpErrorCodes.BadRequest,
+          message: err.message,
+        };
       }
       case Sequelize.UniqueConstraintError: {
         switch (err.parent.table) {
