@@ -12,7 +12,7 @@ module.exports.createSession = async user => {
     await oldestToken.update({ value: tokenPair.refresh });
   } else {
     await user.createRefreshToken({ value: tokenPair.refresh });
-  } 
+  }
   return { tokenPair, user: prepareUser(user) };
 };
 
