@@ -6,7 +6,7 @@ const { User } = require('../db/models/');
 
 const sendDataFields = ['nickname', 'email', 'discord', 'createdByIP'];
 
-module.exports.createUser = async (req, res, next) => {
+module.exports.registerUser = async (req, res, next) => {
   try {
     const {
       body: { user, ua },
@@ -164,5 +164,13 @@ module.exports.linkDiscord = async (req, res, next) => {
   } catch (e) {
     console.dir(e);
     next(e);
+  }
+};
+
+module.exports.deleteUser = async (req, res, next) => {
+  try {
+    res.send('idi nahuy');
+  } catch (error) {
+    next(error);
   }
 };
