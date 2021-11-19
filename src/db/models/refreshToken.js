@@ -1,5 +1,9 @@
 'use strict';
 const { Model } = require('sequelize');
+const {
+  regex: { tokenRegex },
+} = require('../../validation');
+
 module.exports = (sequelize, DataTypes) => {
   class RefreshToken extends Model {
     static associate ({ User }) {
@@ -21,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       value: {
         type: DataTypes.TEXT,
+        is: tokenRegex,
         allowNull: false,
       },
       ua: DataTypes.STRING,
