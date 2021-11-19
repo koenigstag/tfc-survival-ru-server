@@ -19,11 +19,6 @@ module.exports.registerUser = async (req, res, next) => {
       password,
       // TODO ua check and restrict more than 3 accs
       createdByIP: ua.ip,
-      // TODO tokens
-      ...{
-        accessToken: 'access asdQWE',
-        refreshToken: 'refresh asdQWE',
-      },
     });
 
     // if user was not created
