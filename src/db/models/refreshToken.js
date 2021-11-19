@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class RefreshToken extends Model {
     static associate ({ User }) {
       RefreshToken.belongsTo(User, {
-        foreignKey: 'userId'
+        foreignKey: 'userId',
       });
     }
   }
@@ -13,14 +13,18 @@ module.exports = (sequelize, DataTypes) => {
       userId: {
         field: 'user_id',
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'User',
+          key: 'id',
+        },
       },
       value: {
         type: DataTypes.TEXT,
-        allowNull: false
+        allowNull: false,
       },
       ua: DataTypes.STRING,
-      fingerprint: DataTypes.STRING
+      fingerprint: DataTypes.STRING,
     },
     {
       sequelize,
