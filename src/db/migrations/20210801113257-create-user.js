@@ -25,16 +25,6 @@ module.exports = {
       discord: {
         type: Sequelize.STRING
       },
-      accessToken: {
-        field: 'access_token',
-        allowNull: false,
-        type: Sequelize.TEXT,
-      },
-      refreshToken: {
-        field: 'refresh_token',
-        allowNull: false,
-        type: Sequelize.TEXT,
-      },
       createdByIP: {
         field: 'created_by_ip',
         allowNull: false,

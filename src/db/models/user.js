@@ -2,7 +2,7 @@
 const { Model, ValidationError } = require('sequelize');
 const bcrypt = require('bcrypt');
 const {
-  regex: { nicknameRegex, emailRegex, discordRegex, tokenRegex, ipRegex },
+  regex: { nicknameRegex, emailRegex, discordRegex, ipRegex, passwordRegex },
 } = require('../../validation');
 const { SALT_ROUNDS } = require('../../constants');
 
@@ -19,7 +19,11 @@ async function hashPassword (user, options) {
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate (models) {}
+    static associate (models) {
+      User.hasMany(models.RefreshToken, {
+        foreignKey: 'userId',
+      });
+    }
 
     async comparePassword (password) {
       return bcrypt.compare(password, this.getDataValue('password'));
@@ -35,6 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       password: {
+        is: passwordRegex,
         field: 'password_hash',
         allowNull: false,
         type: DataTypes.TEXT,
@@ -81,20 +86,7 @@ module.exports = (sequelize, DataTypes) => {
         },
         type: DataTypes.STRING,
       },
-      accessToken: {
-        is: tokenRegex,
-        field: 'access_token',
-        allowNull: false,
-        type: DataTypes.TEXT,
-      },
-      refreshToken: {
-        is: tokenRegex,
-        field: 'refresh_token',
-        allowNull: false,
-        type: DataTypes.TEXT,
-      },
       createdByIP: {
-        is: ipRegex,
         field: 'created_by_ip',
         allowNull: false,
         // TODO WIP tests
@@ -109,6 +101,12 @@ module.exports = (sequelize, DataTypes) => {
 
             if (users.length >= 3) {
               throw new Error('Only 3 accounts permitted');
+            }
+          },
+          regex (v) {
+            const verdict = ipRegex.test(v);
+            if (!verdict) {
+              throw new Error('IP must pass regex');
             }
           },
         },

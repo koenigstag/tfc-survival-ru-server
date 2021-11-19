@@ -3,6 +3,8 @@ const yup = require('yup');
 // regexp
 const nicknameRegex = /^[a-z0-9_]{3,16}$/i;
 const emailRegex = /^\S+@\S+\.\S+$/;
+// TODO fix regex
+const passwordRegex = /^(?=.*\d)(?=.*[a-z])[0-9a-z]{6,}$/i
 const discordRegex = /^.{2,32}#\d{4}$/;
 const tokenRegex = /^\$2[a-z0-9.\/$]{58}$/i;
 const ipRegex = /^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/;
@@ -15,11 +17,27 @@ const discordScheme = yup.string().matches(discordRegex);
 const tokenScheme = yup.string().matches(tokenRegex);
 const ipScheme = yup.string().matches(ipRegex);
 const skinFilenameScheme = yup.string().matches(skinFilenameRegex);
+const passwordScheme = yup.string()
+  .matches(
+    passwordRegex,
+    'Не соответствует шаблону. Минимум 6 символов: цифр, и латинских букв'
+  );
+
+const registrationScheme = yup.object().required().shape({
+  nickname: nicknameScheme.required(),
+  email: emailScheme.required(),
+})
+
+const loginScheme = yup.object().shape({
+  nickname: nicknameScheme.required(),
+  password: passwordScheme.required(),
+});
 
 module.exports = {
   regex: {
     nicknameRegex,
     emailRegex,
+    passwordRegex,
     discordRegex,
     tokenRegex,
     ipRegex,
@@ -32,5 +50,7 @@ module.exports = {
     tokenScheme,
     ipScheme,
     skinFilenameScheme,
+    registrationScheme, 
+    loginScheme,
   },
 };
