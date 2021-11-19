@@ -1,0 +1,6 @@
+PATCH  http://localhost:5001/api/users/nickname HTTP/1.1
+Content-Type: application/json
+
+{
+  
+}

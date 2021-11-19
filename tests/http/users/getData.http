@@ -1,0 +1,1 @@
+GET http://localhost:5001/api/users/nickname HTTP/1.1
