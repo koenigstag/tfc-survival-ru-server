@@ -1,5 +1,5 @@
 const JwtService = require('./jwtService');
-const { MAX_DEVICE_AMOUNT } = require('../../constants');
+const { MAX_DEVICE_AMOUNT } = require('../constants');
 const prepareUser = require('../utils/prepareUser');
 
 module.exports.createSession = async user => {

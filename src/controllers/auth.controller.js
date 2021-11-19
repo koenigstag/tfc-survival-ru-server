@@ -1,6 +1,6 @@
 const createHttpError = require('http-errors');
 const AuthService = require('../services/authService');
-const { User, RefreshToken } = require('../models');
+const { User, RefreshToken } = require('../db/models');
 
 module.exports.signIn = async (req, res, next) => {
   try {
