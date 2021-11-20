@@ -21,7 +21,7 @@ module.exports.checkAccessToken = async (req, res, next) => {
     if (authorization) {
       const [type, token] = authorization.split(' ');
       if(type !== 'Bearer'){
-        res.set('WWW-Authenticate', 'Bearer realm="squadhelp.com"')
+        res.set('WWW-Authenticate', 'Bearer realm="tfc-survival.ru"')
         return res.status(401).end()
       }
       req.tokenData = await JwtService.verifyAccessToken(token);
