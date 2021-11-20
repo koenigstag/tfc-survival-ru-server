@@ -5,7 +5,7 @@ const { User, RefreshToken } = require('../db/models');
 module.exports.signIn = async (req, res, next) => {
   try {
     const {
-      body: { nickname },
+      body: { nickname, ua = {}, fingerprint = {} },
       password,
     } = req;
 
@@ -14,9 +14,14 @@ module.exports.signIn = async (req, res, next) => {
     });
 
     if (user && (await user.comparePassword(password))) {
-      const data = await AuthService.createSession(user);
+      const data = await AuthService.createSession(
+        user,
+        JSON.stringify(ua),
+        JSON.stringify(fingerprint)
+      );
       return res.status(201).send({ data });
     }
+    console.log('invalid credentials');
     next(createHttpError(401, 'Invalid credentials'));
   } catch (error) {
     next(error);
