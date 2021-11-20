@@ -3,20 +3,17 @@ const decryptPassTransfer = require('../middlewares/decryptPassTransfer');
 const { checkAccessToken } = require('../middlewares/token.mw');
 const UserController = require('../controllers/user.controller.js');
 
-router.route('/').post(decryptPassTransfer, UserController.registerUser);
-
 router
   .route('/:nickname')
-  .post(decryptPassTransfer, checkAccessToken, UserController.loginUser)
-  .patch(decryptPassTransfer, checkAccessToken, UserController.changePass)
-  .delete(checkAccessToken, UserController.deleteUser);
+  // .delete(checkAccessToken, UserController.deleteUser)
+  // .get(checkAccessToken, UserController.getUser);
 
-// TODO add security middlewares
-// router.route('/:nickname/:accessToken').get(checkAccessToken, UserController.getUser);
+router
+  .route('/password/:nickname')
+  .patch(decryptPassTransfer, checkAccessToken, UserController.changePass);
 
-// TODO add security middlewares
 router
   .route('/discord/:nickname')
-  .patch(checkAccessToken, UserController.linkDiscord);
+  .patch(checkAccessToken,  UserController.linkDiscord);
 
 module.exports = router;
