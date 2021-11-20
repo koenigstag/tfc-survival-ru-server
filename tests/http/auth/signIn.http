@@ -2,9 +2,12 @@ POST http://localhost:5000/api/auth/sign-in HTTP/1.1
 Content-Type: application/json
 
 {
-  "nickname": "test",
+  "nickname": "test1",
   "passwordCrypt": {
     "iv": "a8991adcf7584ca6a55692f2b9532b73",
     "content": "a1a5371eb685112f66d30f"
+  },
+  "ua": {
+    "ip": "123.123.123.123"
   }
 }
