@@ -21,8 +21,7 @@ module.exports.signIn = async (req, res, next) => {
       );
       return res.status(201).send({ data });
     }
-    console.log('invalid credentials');
-    next(createHttpError(401, 'Invalid credentials'));
+    next(createHttpError(404, 'Invalid credentials'));
   } catch (error) {
     next(error);
   }
@@ -65,7 +64,7 @@ module.exports.refresh = async (req, res, next) => {
     });
 
     if (!refreshTokenInstance) {
-      return next(createHttpError(404, 'Token not found'));
+      return next(createHttpError(419, 'Token not found'));
     }
     const data = await AuthService.refreshSession(refreshTokenInstance);
     res.status(201).send({ data });
