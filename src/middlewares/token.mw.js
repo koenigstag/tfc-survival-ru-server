@@ -1,4 +1,5 @@
 const createHttpError = require("http-errors");
+const { JsonWebTokenError } = require('jsonwebtoken');
 const JwtService = require("../services/jwtService");
 
 module.exports.checkRefreshToken = async (req, res, next) => {
@@ -29,7 +30,7 @@ module.exports.checkAccessToken = async (req, res, next) => {
     }
     next(createHttpError(401, "Need token"));
   } catch (error) {
-    if (error instanceof SyntaxError) {
+    if (error instanceof JsonWebTokenError) {
       next(createHttpError(401, "Invalid token"));
     }
     next(error);
