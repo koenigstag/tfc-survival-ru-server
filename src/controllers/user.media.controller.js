@@ -2,9 +2,7 @@ const { log } = require('../misc/logger');
 
 module.exports.setSkin = async (req, res, next) => {
   try {
-    // TODO db set
     const { file } = req;
-    // log('new skin', file);
 
     // TODO add error handling
     if (!file) {
@@ -21,9 +19,7 @@ module.exports.setSkin = async (req, res, next) => {
 
 module.exports.setCape = async (req, res, next) => {
   try {
-    // TODO db set
     const { file } = req;
-    // log('new cape', file);
 
     // TODO add error handling
     if (!file) {
