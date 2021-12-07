@@ -5,6 +5,8 @@ const {
   ACCESS_TOKEN_TIME,
   REFRESH_TOKEN_SECRET,
   REFRESH_TOKEN_TIME,
+  ADMIN_TOKEN_SECRET,
+  ADMIN_TOKEN_TIME,
 } = require('../constants');
 
 const signJWT = promisify(jwt.sign);
@@ -19,6 +21,10 @@ const tokenConfig = {
     secret: REFRESH_TOKEN_SECRET,
     time: REFRESH_TOKEN_TIME,
   },
+  admin: {
+    secret: ADMIN_TOKEN_SECRET,
+    time: ADMIN_TOKEN_TIME,
+  },
 };
 
 const createToken = (payload, { time, secret }) =>
@@ -26,7 +32,7 @@ const createToken = (payload, { time, secret }) =>
     {
       nickname: payload.nickname,
       email: payload.email,
-      // role: payload.role,
+      role: payload.role,
     },
     secret,
     { expiresIn: time }
@@ -40,8 +46,16 @@ module.exports.createTokenPair = async payload => {
     access: await createToken(payload, tokenConfig.access),
   };
 };
+
+module.exports.createAdminToken = async payload => {
+  return await createToken(payload, tokenConfig.admin);
+};
+
 module.exports.verifyAccessToken = token =>
   verifyToken(token, tokenConfig.access);
 
 module.exports.verifyRefreshToken = token =>
   verifyToken(token, tokenConfig.refresh);
+
+module.exports.verifyAdminToken = token =>
+  verifyToken(token, tokenConfig.admin);

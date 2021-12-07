@@ -1,6 +1,8 @@
 const createHttpError = require('http-errors');
 const AuthService = require('../services/authService');
 const { User, RefreshToken } = require('../db/models');
+const admins = require('../admins.json');
+const { createAdminToken } = require('../services/jwtService');
 
 module.exports.signIn = async (req, res, next) => {
   try {
@@ -13,15 +15,22 @@ module.exports.signIn = async (req, res, next) => {
       where: { nickname },
     });
 
-    if (user && (await user.comparePassword(password))) {
-      const data = await AuthService.createSession(
-        user,
-        JSON.stringify(ua),
-        JSON.stringify(fingerprint)
-      );
-      return res.status(201).send({ data });
+    if (!user || !(await user.comparePassword(password))) {
+      return next(createHttpError(404, 'Invalid credentials'));
     }
-    next(createHttpError(404, 'Invalid credentials'));
+
+    const data = await AuthService.createSession(
+      user,
+      JSON.stringify(ua),
+      JSON.stringify(fingerprint)
+    );
+
+    if (admins.includes(data.user.nickname)) {
+      data.user.role = 'admin';
+      data.adminToken = await createAdminToken(data.user);
+    }
+
+    return res.status(201).send({ data });
   } catch (error) {
     next(error);
   }
@@ -40,14 +49,22 @@ module.exports.signUp = async (req, res, next) => {
       createdByIP: ua.ip,
     });
 
-    if (createdUser) {
-      const data = await AuthService.createSession(
-        createdUser,
-        JSON.stringify(ua),
-        JSON.stringify(fingerprint)
-      );
-      return res.status(201).send({ data });
+    if (!createdUser) {
+      return next(createHttpError(400, 'Cannot create user'));
     }
+
+    const data = await AuthService.createSession(
+      createdUser,
+      JSON.stringify(ua),
+      JSON.stringify(fingerprint)
+    );
+
+    if (admins.includes(data.user.nickname)) {
+      data.user.role = 'admin';
+      data.adminToken = await createAdminToken(data.user);
+    }
+
+    return res.status(201).send({ data });
   } catch (error) {
     next(error);
   }
@@ -66,7 +83,14 @@ module.exports.refresh = async (req, res, next) => {
     if (!refreshTokenInstance) {
       return next(createHttpError(419, 'Token not found'));
     }
+
     const data = await AuthService.refreshSession(refreshTokenInstance);
+
+    if (admins.includes(data.user.nickname)) {
+      data.user.role = 'admin';
+      data.adminToken = await createAdminToken(data.user);
+    }
+
     res.status(201).send({ data });
   } catch (error) {
     next(error);
