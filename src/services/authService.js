@@ -16,9 +16,10 @@ module.exports.createSession = async (user, ua = null, fingerprint = null) => {
   return { tokenPair, user: prepareUser(user) };
 };
 
-module.exports.refreshSession = async refreshToken => {
-  const user = await refreshToken.getUser();
+module.exports.refreshSession = async refreshTokenInstance => {
+  const user = await refreshTokenInstance.getUser();
   const tokenPair = await JwtService.createTokenPair(user);
-  await refreshToken.update({ value: tokenPair.refresh });
-  return { user: prepareUser(user), tokenPair };
+  await refreshTokenInstance.update({ value: tokenPair.refresh });
+  
+  return { tokenPair, user: prepareUser(user) };
 };

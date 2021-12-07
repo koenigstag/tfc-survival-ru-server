@@ -106,7 +106,7 @@ module.exports.changePass = async (req, res, next) => {
     // check - compare password
     const passwordCompare = await bcrypt.compare(oldpassword, user.password);
     if (!passwordCompare) {
-      return next(new EmptyResultError('Invalid nickname or password'));
+      return next(new EmptyResultError('Invalid credentials'));
     }
 
     // update to new password

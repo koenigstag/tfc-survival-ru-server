@@ -40,9 +40,8 @@ module.exports = (err, req, res, next) => {
     result = handleSequelizeErrors(err, req, res, next);
   }
 
-  log(result);
   log('Error was handled: ' + Boolean(result));
-  if (Boolean(result) === false) {
+  if (Boolean(result) === false || result.status === undefined) {
     result = {
       status: CommonHttpErrorCodes.InternalServerError,
       message: 'Server Error',
@@ -77,7 +76,7 @@ const handleSequelizeErrors = (err, req, res, next) => {
               message: err.message,
             };
           }
-          case 'Invalid nickname or password': {
+          case 'Invalid credentials': {
             return {
               status: CommonHttpErrorCodes.BadRequest,
               message: err.message,
