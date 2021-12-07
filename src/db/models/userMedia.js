@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'UserMedia',
-      tableName: 'userMedia',
+      tableName: 'user_media',
       underscored: true,
     }
   );
