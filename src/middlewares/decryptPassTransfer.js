@@ -1,4 +1,4 @@
-const { decrypt } = require('../services/passTransfer');
+const { decrypt } = require('../utils/passTransfer');
 
 module.exports = decryptPassTransfer = (req, res, next) => {
   try {
