@@ -1,8 +1,9 @@
-const uuid = require('uuid');
+const { v4 } = require('uuid');
 const createHttpError = require('http-errors');
 const AuthService = require('../services/authService');
 const { User, RefreshToken } = require('../db/models');
 const admins = require('../admins.json');
+const emailDomains = require('../emailDomains.json');
 const { createAdminToken } = require('../services/jwtService');
 const {
   sendActivationMail,
@@ -17,24 +18,29 @@ module.exports.signIn = async (req, res, next) => {
       password,
     } = req;
 
+    // найти пользователя
     const foundUser = await User.findOne({
       where: { nickname },
     });
 
+    // проверить пароль
     if (!foundUser || !(await foundUser.comparePassword(password))) {
       return next(createHttpError(404, 'Invalid credentials'));
     }
 
+    // проверить активации почты
     if (!foundUser.isActivated) {
       return next(createHttpError(424, 'Need to confirm email first'));
     }
 
+    // создать сессию токенов
     const data = await AuthService.createSession(
       foundUser,
       JSON.stringify(ua),
       JSON.stringify(fingerprint)
     );
 
+    // добавить админ токен если ник игрока есть в списке админов
     if (admins.includes(data.user.nickname)) {
       data.user.role = 'admin';
       data.adminToken = await createAdminToken(data.user);
@@ -53,9 +59,27 @@ module.exports.signUp = async (req, res, next) => {
       password,
     } = req;
 
-    const uuid = uuid.v4();
+    // проверить на доверенные домены почтовых сайтов
+    if (user.email) {
+      if (emailDomains.length) {
+        let check = false;
+        for (const domain of emailDomains) {
+          const regex = new RegExp(`^.*@${domain}$`);
+          if (regex.test(user.email)) {
+            check = true;
+          }
+        }
+        if (!check) {
+          return next(createHttpError(403, 'Email domain is not acceptable'));
+        }
+      }
+    }
+
+    // создать ссылку для подтверждения почты
+    const uuid = v4();
     const link = createActivationLink(uuid);
 
+    // создать юзера
     const createdUser = await User.create({
       ...user,
       password,
@@ -67,14 +91,17 @@ module.exports.signUp = async (req, res, next) => {
       return next(createHttpError(400, 'Cannot create user'));
     }
 
+    // отправить письмо активации
     await sendActivationMail(createdUser.email, link);
 
+    // создать сессию токенов
     const data = await AuthService.createSession(
       createdUser,
       JSON.stringify(ua),
       JSON.stringify(fingerprint)
     );
 
+    // добавить админ токен если ник игрока есть в списке админов
     if (admins.includes(data.user.nickname)) {
       data.user.role = 'admin';
       data.adminToken = await createAdminToken(data.user);
@@ -94,19 +121,19 @@ module.exports.changePass = async (req, res, next) => {
       body: { oldpassword },
     } = req;
 
-    // get user with old password
+    // получить пользователя со старым паролем
     const user = await User.findOne({ where: { nickname } });
     if (!user) {
       return next(new EmptyResultError('Cant find user with given nickname'));
     }
 
-    // check - compare password
+    // сверить текущий пароль с базой
     const passwordCompare = await bcrypt.compare(oldpassword, user.password);
     if (!passwordCompare) {
       return next(new EmptyResultError('Invalid credentials'));
     }
 
-    // update to new password
+    // обновить на новый пароль
     await User.findOne({ where: { nickname } })
       .then(result => {
         result.update({
@@ -117,7 +144,6 @@ module.exports.changePass = async (req, res, next) => {
         return next(new EmptyResultError('Cant find user with given nickname'));
       });
 
-    // send response
     res.status(200).send({ data: prepareUser(user) });
   } catch (e) {
     console.dir(e);
@@ -128,9 +154,10 @@ module.exports.changePass = async (req, res, next) => {
 module.exports.refresh = async (req, res, next) => {
   try {
     const {
-      body: { refreshToken }, // refresh token is not expired
+      body: { refreshToken }, // рефреш токен не протух
     } = req;
 
+    // находим рефреш токен в базе
     const refreshTokenInstance = await RefreshToken.findOne({
       where: { value: refreshToken },
     });
@@ -139,8 +166,10 @@ module.exports.refresh = async (req, res, next) => {
       return next(createHttpError(419, 'Token not found'));
     }
 
+    // на его основе создаем новую сессию
     const data = await AuthService.refreshSession(refreshTokenInstance);
 
+    // добавить админ токен если пользователь есть в списке админов
     if (admins.includes(data.user.nickname)) {
       data.user.role = 'admin';
       data.adminToken = await createAdminToken(data.user);
@@ -156,18 +185,23 @@ module.exports.checkEmailActivation = async (req, res, next) => {
   try {
     const { link } = req.params;
 
+    // проверить просроченость ссылки подтвержления
     const verdict = await checkMailExpire(link);
 
+    // найти пользователя по ссылке
     const foundUser = await User.findOne({ where: { activationLink: link } });
 
+    // отправить ошибку
     if (!verdict || !foundUser) {
       return next(createHttpError(400, 'Invalid link'));
     }
 
+    // отметить что почта активирована
     foundUser.isActivated = true;
     await foundUser.save();
 
-    res.redirect(CONSTANTS.REDIRECT_URL);
+    // отправить успех
+    res.status(202).end();
   } catch (error) {
     next(error);
   }
