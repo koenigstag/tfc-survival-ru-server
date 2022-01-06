@@ -1,3 +1,3 @@
 const _ = require('lodash');
 
-module.exports = user => _.omit(user.get(), ['password', 'createdByIP']);
+module.exports = user => _.omit(user.get(), ['password', 'createdByIP', 'activationLink']);
