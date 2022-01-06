@@ -30,6 +30,17 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
+      activationLink: {
+        field: 'activation_link',
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      isActivated: {
+        field: 'is_activated',
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
       createdAt: {
         field: "created_at",
         allowNull: false,
