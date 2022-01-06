@@ -6,12 +6,13 @@ const {
 } = require('../../validation');
 const { SALT_ROUNDS } = require('../../constants');
 
+// TODO check password regex
 async function hashPassword (user, options) {
   if (user.changed('password')) {
     const { password } = user;
-    if (!/^(?=.*\d)(?=.*[a-z])[0-9a-z]{6,}$/i.test(password)) {
+    /* if (!passwordRegex.test(password)) {
       throw new ValidationError('Password must match the regex');
-    }
+    } */
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     user.password = hashedPassword;
   }
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
       },
       password: {
-        is: passwordRegex,
+        // is: passwordRegex,
         field: 'password_hash',
         allowNull: false,
         type: DataTypes.TEXT,
@@ -112,6 +113,17 @@ module.exports = (sequelize, DataTypes) => {
         },
         type: DataTypes.STRING,
       },
+      activationLink: {
+        field: 'activation_link',
+        allowNull: false,
+        type: DataTypes.STRING,
+      },
+      isActivated: {
+        field: 'is_activated',
+        allowNull: false,
+        defaultValue: false,
+        type: DataTypes.BOOLEAN,
+      }
     },
     {
       sequelize,
