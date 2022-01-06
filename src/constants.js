@@ -25,5 +25,7 @@ module.exports = {
   MAIL_EXPIRATION_TIME: 5 * 60 * 1000, // 5 min
 
   REDIRECT_URL: mode === 'development' ? 'http://localhost:3000' : 'http://tfc-survival.ru',
-  ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'http://tfc-survival.ru:5000'
+  ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'http://tfc-survival.ru:5000',
+
+  PLAYERS_DATA_PATH: '/home/xelo/Desktop/server/world/playerdata',
 }
