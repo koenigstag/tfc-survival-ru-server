@@ -21,27 +21,28 @@ module.exports.createActivationLink = (uuid) => {
 }
 
 module.exports.checkMailExpire = async link => {
-  const [uuid, timestamp] = link.split('^');
+  const timestamp = link.split('^')[1];
 
   if (Date.now() >= timestamp + CONSTANTS.MAIL_EXPIRATION_TIME) {
     return false;
   }
 
-  return uuid;
+  return true;
 };
 
 module.exports.sendActivationMail = async (to, link) => {
-  const href = `${CONSTANTS.ORIGIN_URL}/api/users/activate/${link}`;
+  const href = `${CONSTANTS.REDIRECT_URL}/activate-email/?link=${link}`;
 
   await transporter.sendMail({
     from: process.env.SMTP_USER,
     to,
-    subject: 'Активация аккаунта на ' + CONSTANTS.REDIRECT_URL,
+    subject: 'Активация аккаунта на сайте ' + CONSTANTS.REDIRECT_URL,
     text: '',
     html: `
             <div>
                 <h1>Для активации перейдите по ссылке</h1>
-                <a href="${href}">${href}</a>
+                <h2>Время жизни ссылки 5 минут</h2>
+                <div><a href="${href}">${href}</a></div>
             </div>
         `,
   });
