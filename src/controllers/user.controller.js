@@ -8,6 +8,7 @@ const {
   checkMailExpire,
 } = require('../services/mail.service');
 const prepareUser = require('../utils/prepareUser');
+const { getUsersStats, getUsersData } = require('../services/nbt.service');
 
 module.exports.getUser = async (req, res, next) => {
   try {
@@ -67,6 +68,26 @@ module.exports.linkDiscord = async (req, res, next) => {
 module.exports.deleteUser = async (req, res, next) => {
   try {
     res.send('idi nahuy');
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getUsersStats = async (req, res, next) => {
+  try {
+    const userStats = await getUsersStats();
+
+    res.status(200).send({ data: userStats });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getUsersData = async (req, res, next) => {
+  try {
+    const userData = await getUsersData();
+
+    res.status(200).send({ data: userData });
   } catch (error) {
     next(error);
   }

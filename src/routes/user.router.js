@@ -18,4 +18,7 @@ router
 
 router.get('/activate/:link', AuthController.checkEmailActivation);
 
+router.get('/stats', UserController.getUsersStats);
+router.get('/data', UserController.getUsersData);
+
 module.exports = router;
