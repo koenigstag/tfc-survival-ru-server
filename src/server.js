@@ -1,5 +1,6 @@
 const http = require('http');
-require('dotenv').config({ path: __dirname + '/../.env' });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname + '/../.env') });
 const { log } = require('./misc/logger');
 const app = require('./app.js');
 
