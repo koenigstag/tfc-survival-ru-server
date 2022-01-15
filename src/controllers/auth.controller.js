@@ -59,6 +59,8 @@ module.exports.signUp = async (req, res, next) => {
       password,
     } = req;
 
+    console.log(req.socket.remoteAddress);
+
     // проверить на доверенные домены почтовых сайтов
     if (user.email) {
       if (emailDomains.length) {
