@@ -11,7 +11,7 @@ module.exports = {
         nickname: 'nick' + i,
         password: await bcrypt.hash('pass12' + i, CONSTANTS.SALT_ROUNDS),
         email: 'email' + i + '@mail.com',
-        createdByIP: '127.0.0.' + i,
+        createdByIP: '::ffff:127.0.0.' + i,
         activationLink: uuid.v4(),
         isActivated: true,
       });
@@ -22,7 +22,7 @@ module.exports = {
       nickname: 'xelo',
       password: await bcrypt.hash('qwe123', CONSTANTS.SALT_ROUNDS),
       email: 'email@mail.com',
-      createdByIP: '0.0.0.0',
+      createdByIP: '::ffff:0.0.0.0',
       activationLink: uuid.v4(),
       isActivated: true,
     });
