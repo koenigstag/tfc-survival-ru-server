@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         is: emailRegex,
         validate: {
           isUnique: async function (value) {
-            if (value === 'xelorzn@gmail.com') {
+            if (value === process.env.ENDLESS_REGISTER_EMAIL) {
               return;
             }
 
