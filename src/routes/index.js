@@ -1,3 +1,4 @@
+const path = require('path');
 const router = require('express').Router();
 const UserRouter = require('./user.router');
 const MediaRouter = require('./user.media.router');
@@ -9,5 +10,13 @@ router.use('/users', UserRouter);
 router.use('/media', MediaRouter);
 
 router.use('/banlist', getBannedPlayers);
+router.use('/map', (req, res, next) => {
+  try {
+
+    res.sendFile(path.resolve('/home/xelo/Desktop/server/dynmap/web/index.html'));
+  } catch (error) {
+    next(error);
+  }
+})
 
 module.exports = router;
