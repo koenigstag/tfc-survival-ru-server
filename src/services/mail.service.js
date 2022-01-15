@@ -1,15 +1,11 @@
-const createHttpError = require('http-errors');
 const nodemailer = require('nodemailer');
-const fs = require('fs/promises');
-const path = require('path');
-const { find } = require('lodash');
 const CONSTANTS = require('../constants');
 
 const transporter = nodemailer.createTransport({
   // host: process.env.SMTP_HOST,
   // port: process.env.SMTP_PORT,
   service: 'gmail',
-  secure: false,
+  secure: true,
   auth: {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASSWORD,
@@ -17,11 +13,11 @@ const transporter = nodemailer.createTransport({
 });
 
 module.exports.createActivationLink = (uuid) => {
-  return uuid + "^" + Date.now();
+  return uuid + CONSTANTS.MAIL_LINK_SEPARATOR + Date.now();
 }
 
 module.exports.checkMailExpire = async link => {
-  const timestamp = link.split('^')[1];
+  const timestamp = link.split(CONSTANTS.MAIL_LINK_SEPARATOR)[1];
 
   if (Date.now() >= timestamp + CONSTANTS.MAIL_EXPIRATION_TIME) {
     return false;
@@ -41,7 +37,7 @@ module.exports.sendActivationMail = async (to, link) => {
     html: `
             <div>
                 <h1>Для активации перейдите по ссылке</h1>
-                <h2>Время жизни ссылки 5 минут</h2>
+                <h2>Время жизни ссылки 10 минут</h2>
                 <div><a href="${href}">${href}</a></div>
             </div>
         `,

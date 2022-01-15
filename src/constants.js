@@ -22,10 +22,11 @@ module.exports = {
 
   MAX_DEVICE_AMOUNT: 3,
   SALT_ROUNDS: 6,
-  MAIL_EXPIRATION_TIME: 5 * 60 * 1000, // 5 min
+  MAIL_EXPIRATION_TIME: 10 * 60 * 1000, // 10 min
+  MAIL_LINK_SEPARATOR: '_',
 
-  REDIRECT_URL: mode === 'development' ? 'http://localhost:3000' : 'http://tfc-survival.ru',
-  ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'http://tfc-survival.ru:5000',
+  REDIRECT_URL: mode === 'development' ? 'http://localhost:3000' : 'https://tfc-survival.ru',
+  ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'http://tfc-survival.ru:5001',
 
   PLAYERS_DATA_PATH: '/home/xelo/Desktop/server/world/playerdata',
   PLAYERS_STATS_PATH: '/home/xelo/Desktop/server/world/stats',
