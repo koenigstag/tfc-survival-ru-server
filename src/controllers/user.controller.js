@@ -1,14 +1,10 @@
 const { EmptyResultError } = require('sequelize');
 const createHttpError = require('http-errors');
 const _ = require('lodash');
-const bcrypt = require('bcrypt');
 const { User } = require('../db/models/');
-const CONSTANTS = require('../constants');
-const {
-  checkMailExpire,
-} = require('../services/mail.service');
 const prepareUser = require('../utils/prepareUser');
 const { getUsersStats, getUsersData } = require('../services/nbt.service');
+const bannedPlayers = require('../../banned-players.json');
 
 module.exports.getUser = async (req, res, next) => {
   try {
@@ -92,3 +88,13 @@ module.exports.getUsersData = async (req, res, next) => {
     next(error);
   }
 };
+
+module.exports.getBannedPlayers = async (req, res, next) => {
+  try {
+    const list = bannedPlayers || [];
+
+    res.status(200).send({ data: list });
+  } catch (error) {
+    next(error);
+  }
+}
