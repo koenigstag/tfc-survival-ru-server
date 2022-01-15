@@ -28,6 +28,7 @@ module.exports = {
   REDIRECT_URL: mode === 'development' ? 'http://localhost:3000' : 'https://tfc-survival.ru',
   ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'http://tfc-survival.ru:5001',
 
+  SERVER_FOLDER: '/home/xelo/Desktop/server',
   PLAYERS_DATA_PATH: '/home/xelo/Desktop/server/world/playerdata',
   PLAYERS_STATS_PATH: '/home/xelo/Desktop/server/world/stats',
 }
