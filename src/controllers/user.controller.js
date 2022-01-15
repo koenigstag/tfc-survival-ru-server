@@ -4,7 +4,6 @@ const _ = require('lodash');
 const { User } = require('../db/models/');
 const prepareUser = require('../utils/prepareUser');
 const { getUsersStats, getUsersData } = require('../services/nbt.service');
-const bannedPlayers = require('../../banned-players.json');
 
 module.exports.getUser = async (req, res, next) => {
   try {
@@ -91,7 +90,8 @@ module.exports.getUsersData = async (req, res, next) => {
 
 module.exports.getBannedPlayers = async (req, res, next) => {
   try {
-    const list = bannedPlayers || [];
+    const bannedPlayers = require('/home/xelo/Desktop/server/banned-players.json');
+    const list = [] | bannedPlayers;
 
     res.status(200).send({ data: list });
   } catch (error) {
