@@ -16,7 +16,7 @@ const CommonHttpErrorCodes = {
   GatewayTimeout: 504,
 };
 
-const newResponseErrorObject = message => ({ error: { message } });
+const newErrResponse = message => ({ error: { message } });
 
 module.exports = (err, req, res, next) => {
   let result = false;
@@ -27,17 +27,17 @@ module.exports = (err, req, res, next) => {
 
   // Case TypeError
   if (!result || err instanceof TypeError) {
-    result = handleTypeError(err, req, res, next);
+    result = handleTypeError(err);
   }
 
   // Case Http error
   if (!result || err instanceof HttpError) {
-    result = handleHttpErrors(err, req, res, next);
+    result = handleHttpErrors(err);
   }
 
   // Case Sequelize
   if (!result || err instanceof Sequelize.BaseError) {
-    result = handleSequelizeErrors(err, req, res, next);
+    result = handleSequelizeErrors(err);
   }
 
   log('Error was handled: ' + Boolean(result));
@@ -47,25 +47,35 @@ module.exports = (err, req, res, next) => {
       message: 'Server Error',
     };
   }
-  res.status(result.status).send(newResponseErrorObject(result.message));
+  res.status(result.status).send(newErrResponse(result.message));
   log(
     `Error handler response was sent with status code <${result.status}> and message: ${result.message}\n`
   );
 };
 
-const handleTypeError = (err, req, res, next) => {
+const handleTypeError = (err) => {
   switch (err.message) {
   }
 };
 
-const handleHttpErrors = (err, req, res, next) => {
+const handleHttpErrors = (err) => {
   return {
     status: err.status,
     message: err.message,
   };
 };
 
-const handleSequelizeErrors = (err, req, res, next) => {
+const handleSequelizeErrors = (err) => {
+  if (err instanceof Sequelize.ConnectionError) {
+    switch (err.constructor) {
+      case Sequelize.ConnectionRefusedError: {
+        return {
+          status: CommonHttpErrorCodes.ServiceUnavailable,
+          message: 'Server database is switched off',
+        };
+      }
+    }
+  }
   if (err instanceof Sequelize.EmptyResultError) {
     switch (err.constructor) {
       case Sequelize.EmptyResultError: {
