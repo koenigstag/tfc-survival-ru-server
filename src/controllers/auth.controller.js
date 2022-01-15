@@ -85,7 +85,7 @@ module.exports.signUp = async (req, res, next) => {
     const createdUser = await User.create({
       ...user,
       password,
-      createdByIP: ua.ip,
+      createdByIP: req.socket.remoteAddress,
       activationLink: link,
     });
 
@@ -94,7 +94,7 @@ module.exports.signUp = async (req, res, next) => {
     }
 
     // отправить письмо активации
-    await sendActivationMail(createdUser.email, link);
+    await sendActivationMail(createdUser.email, link, createdUser.nickname);
 
     // создать сессию токенов
     /* const data = await AuthService.createSession(

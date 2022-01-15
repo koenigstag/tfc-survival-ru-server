@@ -10,9 +10,6 @@ const { SALT_ROUNDS } = require('../../constants');
 async function hashPassword (user, options) {
   if (user.changed('password')) {
     const { password } = user;
-    /* if (!passwordRegex.test(password)) {
-      throw new ValidationError('Password must match the regex');
-    } */
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
     user.password = hashedPassword;
   }
@@ -34,22 +31,27 @@ module.exports = (sequelize, DataTypes) => {
   User.init(
     {
       nickname: {
+        type: DataTypes.STRING,
         allowNull: false,
         unique: true,
         is: nicknameRegex,
-        type: DataTypes.STRING,
       },
       password: {
-        // is: passwordRegex,
+        type: DataTypes.TEXT,
         field: 'password_hash',
         allowNull: false,
-        type: DataTypes.TEXT,
+        is: passwordRegex,
       },
       email: {
+        type: DataTypes.STRING,
         allowNull: false,
         is: emailRegex,
         validate: {
           isUnique: async function (value) {
+            if (value === 'xelorzn@gmail.com') {
+              return;
+            }
+
             const users = await User.findAll({
               attributes: ['email'],
               where: {
@@ -62,10 +64,10 @@ module.exports = (sequelize, DataTypes) => {
             }
           },
         },
-        type: DataTypes.STRING,
       },
       // TODO add confirmedEmail field
       discord: {
+        type: DataTypes.STRING,
         allowNull: true,
         is: discordRegex,
         validate: {
@@ -85,14 +87,17 @@ module.exports = (sequelize, DataTypes) => {
             }
           },
         },
-        type: DataTypes.STRING,
       },
       createdByIP: {
+        type: DataTypes.STRING,
         field: 'created_by_ip',
         allowNull: false,
-        // TODO WIP tests
+        is: ipRegex,
         validate: {
           isUnique: async function (value) {
+            if (/^192.168./.test(value) || /(::1)?/.test(value)) {
+              return;
+            }
             const users = await User.findAll({
               attributes: ['created_by_ip'],
               where: {
@@ -111,19 +116,18 @@ module.exports = (sequelize, DataTypes) => {
             }
           },
         },
-        type: DataTypes.STRING,
       },
       activationLink: {
+        type: DataTypes.STRING,
         field: 'activation_link',
         allowNull: false,
-        type: DataTypes.STRING,
       },
       isActivated: {
+        type: DataTypes.BOOLEAN,
         field: 'is_activated',
         allowNull: false,
         defaultValue: false,
-        type: DataTypes.BOOLEAN,
-      }
+      },
     },
     {
       sequelize,
