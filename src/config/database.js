@@ -1,4 +1,5 @@
 const path = require("path");
+require('dotenv').config({ path: path.resolve(__dirname + '/../../.env') });
 const NODE_ENV = process.env.NODE_ENV;
 const DB_USER = process.env["DB_USER_" + NODE_ENV];
 const DB_PASSWORD = process.env["DB_PASSWORD_" + NODE_ENV];
