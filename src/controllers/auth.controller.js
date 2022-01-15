@@ -96,19 +96,6 @@ module.exports.signUp = async (req, res, next) => {
     // отправить письмо активации
     await sendActivationMail(createdUser.email, link, createdUser.nickname);
 
-    // создать сессию токенов
-    /* const data = await AuthService.createSession(
-      createdUser,
-      JSON.stringify(ua),
-      JSON.stringify(fingerprint)
-    ); */
-
-    // добавить админ токен если ник игрока есть в списке админов
-    /* if (admins.includes(data.user.nickname)) {
-      data.user.role = 'admin';
-      data.adminToken = await createAdminToken(data.user);
-    } */
-
     // return res.status(201).send({ data });
     return res.status(201).end();
   } catch (error) {
