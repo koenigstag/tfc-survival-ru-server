@@ -31,4 +31,7 @@ module.exports = {
   SERVER_FOLDER: '/home/xelo/Desktop/server',
   PLAYERS_DATA_PATH: '/home/xelo/Desktop/server/world/playerdata',
   PLAYERS_STATS_PATH: '/home/xelo/Desktop/server/world/stats',
+
+  VK_GROUP: 204055073,
+  VK_API_VERSION: '5.124'
 }
