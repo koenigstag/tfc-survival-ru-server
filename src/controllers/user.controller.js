@@ -1,8 +1,7 @@
-const { EmptyResultError } = require('sequelize');
-const _ = require('lodash');
-const { User } = require('../db/models/');
-const prepareUser = require('../utils/prepareUser');
-const { getUsersStats, getUsersData } = require('../services/nbt.service');
+const { EmptyResultError } = require("sequelize");
+const { User } = require("../db/models/");
+const prepareUser = require("../utils/prepareUser");
+const { getUsersStats, getUsersData } = require("../services/nbt.service");
 
 module.exports.getUser = async (req, res, next) => {
   try {
@@ -15,7 +14,7 @@ module.exports.getUser = async (req, res, next) => {
 
     // if user not found
     if (!user) {
-      return next(new EmptyResultError('Cant find user with given nickname'));
+      return next(new EmptyResultError("Cant find user with given nickname"));
     }
 
     // send response
@@ -35,11 +34,11 @@ module.exports.linkDiscord = async (req, res, next) => {
     // get user
     const user = await User.findOne({ where: { nickname } });
     if (!user) {
-      return next(new EmptyResultError('Cant find user with given nickname'));
+      return next(new EmptyResultError("Cant find user with given nickname"));
     }
 
     // update to new discord
-    await User.findOne({ where: { nickname } }).then(result => {
+    await User.findOne({ where: { nickname } }).then((result) => {
       result.update({
         discord,
       });
@@ -48,11 +47,11 @@ module.exports.linkDiscord = async (req, res, next) => {
     // get updated user
     const updatedUser = await User.findOne({ where: { nickname } });
     if (!updatedUser) {
-      return next(new EmptyResultError('Cant find user with given nickname'));
+      return next(new EmptyResultError("Cant find user with given nickname"));
     }
 
     // send response
-    res.status(200).send({ data: _.pick(updatedUser, sendDataFields) });
+    res.status(200).send({ data: prepareUser(updatedUser) });
   } catch (e) {
     console.dir(e);
     next(e);
@@ -61,7 +60,7 @@ module.exports.linkDiscord = async (req, res, next) => {
 
 module.exports.deleteUser = async (req, res, next) => {
   try {
-    res.send('idi nahuy');
+    res.send("idi nahuy");
   } catch (error) {
     next(error);
   }

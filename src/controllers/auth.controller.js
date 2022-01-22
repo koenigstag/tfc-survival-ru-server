@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const { v4 } = require('uuid');
 const createHttpError = require('http-errors');
 const AuthService = require('../services/authService');
@@ -10,6 +11,7 @@ const {
   createActivationLink,
   checkMailExpire,
 } = require('../services/mail.service');
+const prepareUser = require('../utils/prepareUser');
 
 module.exports.signIn = async (req, res, next) => {
   try {
