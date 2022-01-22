@@ -1,10 +1,8 @@
-const fs = require('fs/promises');
 const { EmptyResultError } = require('sequelize');
 const _ = require('lodash');
 const { User } = require('../db/models/');
 const prepareUser = require('../utils/prepareUser');
 const { getUsersStats, getUsersData } = require('../services/nbt.service');
-const { SERVER_FOLDER } = require('../constants');
 
 module.exports.getUser = async (req, res, next) => {
   try {
@@ -88,14 +86,3 @@ module.exports.getUsersData = async (req, res, next) => {
     next(error);
   }
 };
-
-module.exports.getBannedPlayers = async (req, res, next) => {
-  try {
-    const bannedPlayers = await fs.readFile(`${SERVER_FOLDER}/banned-players.json`);
-    const list = JSON.parse(bannedPlayers) || [];
-
-    res.status(200).send({ data: list });
-  } catch (error) {
-    next(error);
-  }
-}
