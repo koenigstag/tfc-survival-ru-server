@@ -1,0 +1,22 @@
+[
+  "stat.fallOneCm",
+  "stat.crouchOneCm",
+  "stat.boatOneCm",
+  "stat.swimOneCm",
+  "stat.sprintOneCm",
+  "stat.diveOneCm",
+  "stat.climbOneCm",
+  "stat.walkOneCm",
+  "stat.flyOneCm",
+
+  "stat.sneakTime",
+  "stat.jump",
+  
+  "stat.timeSinceDeath",
+  "stat.damageTaken",
+  "stat.damageDealt",
+  "stat.mobKills",
+  
+  "stat.leaveGame",
+  "stat.playOneMinute"
+]

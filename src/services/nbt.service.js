@@ -1,6 +1,8 @@
 const fs = require("fs/promises");
+const _ = require("lodash");
 const nbtModule = require("nbt");
 const path = require("path");
+const filterStats = require("../../misc/filtered-stats.json");
 const {
   SERVER_FOLDER,
   PLAYERS_DATA_PATH,
@@ -70,12 +72,14 @@ const cacheStats = async (preparedStats) => {
   if (Date.now() / 1000 - preparedStats.timestamp > 3600) {
     const stats = await readStatsFiles();
 
-    console.log(stats);
-
-    const jsonStats = JSON.stringify({
-      timestamp: Math.floor(Date.now() / 1000),
-      stats,
-    }, null, 2);
+    const jsonStats = JSON.stringify(
+      {
+        timestamp: Math.floor(Date.now() / 1000),
+        stats,
+      },
+      null,
+      2
+    );
 
     await fs.writeFile(preparedStatsPath, jsonStats, "utf-8");
     return true;
@@ -97,7 +101,7 @@ const readStatsFiles = async () => {
       const content = await fs.readFile(`${PLAYERS_STATS_PATH}/${file}`);
 
       playersStats.push({
-        ...JSON.parse(content),
+        ..._.pick(JSON.parse(content, filterStats)),
         nickname: nicks[file.replace(".json", "")],
       });
     }
