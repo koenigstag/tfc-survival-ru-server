@@ -75,7 +75,7 @@ const cacheStats = async (preparedStats) => {
     const jsonStats = JSON.stringify({
       timestamp: Math.floor(Date.now() / 1000),
       stats,
-    });
+    }, null, 2);
 
     await fs.writeFile(preparedStatsPath, jsonStats, "utf-8");
     return true;
