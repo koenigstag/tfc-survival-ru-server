@@ -16,6 +16,7 @@
   "stat.damageTaken",
   "stat.damageDealt",
   "stat.mobKills",
+  "stat.deaths",
   
   "stat.leaveGame",
   "stat.playOneMinute"
