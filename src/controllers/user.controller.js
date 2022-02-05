@@ -68,9 +68,13 @@ module.exports.deleteUser = async (req, res, next) => {
 
 module.exports.getUsersStats = async (req, res, next) => {
   try {
-    const userStats = await getUsersStats();
+    const {
+      query: { page, rows },
+    } = req;
 
-    res.status(200).send({ data: userStats });
+    const { stats, pages } = await getUsersStats(page, rows);
+
+    res.status(200).send({ data: { stats, pages } });
   } catch (error) {
     next(error);
   }
