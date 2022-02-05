@@ -101,7 +101,7 @@ const readStatsFiles = async () => {
       const content = await fs.readFile(`${PLAYERS_STATS_PATH}/${file}`);
 
       playersStats.push({
-        ..._.pick(JSON.parse(content, filterStats)),
+        ..._.pick(JSON.parse(content), filterStats),
         nickname: nicks[file.replace(".json", "")],
       });
     }
