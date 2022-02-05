@@ -33,6 +33,9 @@ const preparedStatsPath = path.resolve(
 );
 
 module.exports.getUsersStats = async (page, rows) => {
+  const prepPage = Number(page);
+  const prepRows = Number(rows);
+
   let preparedStats = JSON.parse(await fs.readFile(preparedStatsPath, "utf-8"));
 
   const verdict = await cacheStats(preparedStats);
@@ -53,11 +56,13 @@ module.exports.getUsersStats = async (page, rows) => {
       }
       return 0;
     })
-    .slice((page - 1) * rows, (page - 1) * rows + rows);
+    .slice((prepPage - 1) * prepRows, (prepPage - 1) * prepRows + prepRows);
+
+  console.log((prepPage - 1) * rows, (prepPage - 1) * prepRows + prepRows);
 
   return {
     stats: pageContent,
-    pages: Math.ceil(preparedStats.stats.length / rows),
+    pages: Math.max(Math.ceil(preparedStats.stats.length / rows), 1),
   };
 };
 
