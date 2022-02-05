@@ -60,8 +60,6 @@ module.exports.getUsersStats = async (page, rows) => {
     })
     .slice((prepPage - 1) * prepRows, (prepPage - 1) * prepRows + prepRows);
 
-  console.log((prepPage - 1) * rows, (prepPage - 1) * prepRows + prepRows);
-
   return {
     stats: pageContent,
     pages: Math.max(Math.ceil(preparedStats.stats.length / rows), 1),
