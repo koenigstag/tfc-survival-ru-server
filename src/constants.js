@@ -25,7 +25,7 @@ module.exports = {
   MAIL_EXPIRATION_TIME: 10 * 60 * 1000, // 10 min
   MAIL_LINK_SEPARATOR: '_',
 
-  REDIRECT_URL: mode === 'development' ? 'http://localhost:3000' : 'https://tfc-survival.ru',
+  REDIRECT_URL: mode === 'development' ? 'http://tfc-survival.ru:3000' : 'https://tfc-survival.ru',
   ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'http://tfc-survival.ru:5001',
 
   SERVER_FOLDER: '/home/xelo/Desktop/server',
