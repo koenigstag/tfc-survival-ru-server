@@ -9,7 +9,7 @@ module.exports = {
     for (let i = 0; i < 10; i++) {
       users.push({
         nickname: 'nick' + i,
-        password: await bcrypt.hash('pass12' + i, CONSTANTS.SALT_ROUNDS),
+        password: 'pass12',
         email: 'email' + i + '@mail.com',
         createdByIP: '::ffff:127.0.0.' + i,
         activationLink: uuid.v4(),
@@ -20,7 +20,7 @@ module.exports = {
 
     await User.create({
       nickname: 'xelo',
-      password: await bcrypt.hash('qwe123', CONSTANTS.SALT_ROUNDS),
+      password: 'qwe123',
       email: 'email@mail.com',
       createdByIP: '::ffff:0.0.0.0',
       activationLink: uuid.v4(),
