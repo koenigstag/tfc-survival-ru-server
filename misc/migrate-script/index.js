@@ -41,15 +41,15 @@ for (let offset = 0; offset < 1; offset += limit) {
         targetConnect.query(
           `INSERT INTO users 
           (
-            id, nickname, password_hash, email, discord, created_by_ip, activation_link, is_activated
+            id, nickname, password_hash, email, discord, created_by_ip, activation_link, is_activated, created_at, updated_at
           ) 
           VALUES 
           (
-            ? , ? , ? , ? , ? , ? , ? , ? 
+            ? , ? , ? , ? , ? , ? , ? , ? , ? , ?
           );`,
-          [row.Id, row.Login, bcrypt.hashSync(row.Password, 6), row.Email, row.Discord, row.Ip, uuid.v4(), row.IsEmailConfirmed], 
+          [row.Id, row.Login, bcrypt.hashSync(row.Password, 6), row.Email, row.Discord, row.Ip, uuid.v4(), row.IsEmailConfirmed, new Date().toISOString(), new Date().toISOString()], 
           function (err) {
-          if (err) throw err;
+            if (err) throw err;
           }
         )
       }
