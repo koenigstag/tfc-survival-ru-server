@@ -37,7 +37,7 @@ for (let offset = 0; offset < 1; offset += limit) {
       
       for (const row of results) {
         targetConnect.query(
-          `INSERT INTO Users 
+          `INSERT INTO users 
           (
             nickname, password_hash, email, discord
           ) 
