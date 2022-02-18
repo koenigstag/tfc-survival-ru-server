@@ -34,6 +34,19 @@ const preparedStatsPath = path.resolve(
   "../../misc/prepared-stats.json"
 );
 
+module.exports.getMyStats = async (nickname) => {
+  let preparedStats = JSON.parse(await fs.readFile(preparedStatsPath, "utf-8"));
+
+  const verdict = await cacheStats(preparedStats);
+  if (verdict) {
+    preparedStats = JSON.parse(await fs.readFile(preparedStatsPath, "utf-8"));
+  }
+
+  const result = preparedStats.stats.filter((v) => v.nickname === nickname);
+
+  return { stats: result };
+};
+
 module.exports.getUsersStats = async (page, rows) => {
   const prepPage = Number(page);
   const prepRows = Number(rows);

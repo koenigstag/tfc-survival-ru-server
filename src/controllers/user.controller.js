@@ -1,7 +1,7 @@
 const { EmptyResultError } = require("sequelize");
 const { User } = require("../db/models/");
 const prepareUser = require("../utils/prepareUser");
-const { getUsersStats, getUsersData } = require("../services/nbt.service");
+const { getUsersStats, getUsersData, getMyStats } = require("../services/nbt.service");
 
 module.exports.getUser = async (req, res, next) => {
   try {
@@ -69,8 +69,15 @@ module.exports.deleteUser = async (req, res, next) => {
 module.exports.getUsersStats = async (req, res, next) => {
   try {
     const {
-      query: { page, rows },
+      query: { page, rows, nickname },
     } = req;
+
+    if (nickname) {
+      const { stats } = await getMyStats(nickname);
+
+      res.status(200).send({ data: { stats } });
+      return;
+    }
 
     const { stats, pages } = await getUsersStats(page, rows);
 
