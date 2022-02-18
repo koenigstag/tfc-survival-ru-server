@@ -8,6 +8,8 @@ const mysql = require('mysql2');
 
 const bcrypt = require('bcrypt');
 
+const uuid = require('uuid');
+
 const sourceConnect = mysql.createConnection({
   user: DB_USER,
   password: DB_PASSWORD,
@@ -39,13 +41,13 @@ for (let offset = 0; offset < 1; offset += limit) {
         targetConnect.query(
           `INSERT INTO users 
           (
-            nickname, password_hash, email, discord, created_by_ip
+            id, nickname, password_hash, email, discord, created_by_ip, activation_link, is_activated
           ) 
           VALUES 
           (
-            ? , ? , ? , ? , ?
-          );`, 
-          [row.Login, bcrypt.hashSync(row.Password, 6), row.Email, row.Discord, row.Ip], 
+            ? , ? , ? , ? , ? , ? , ? , ? 
+          );`,
+          [row.Id, row.Login, bcrypt.hashSync(row.Password, 6), row.Email, row.Discord, row.Ip, uuid.v4(), row.IsEmailConfirmed], 
           function (err) {
           if (err) throw err;
           }
