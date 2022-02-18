@@ -47,7 +47,7 @@ for (let offset = 0; offset < 1; offset += limit) {
           (
             ? , ? , ? , ? , ? , ? , ? , ? , ? , ?
           );`,
-          [row.Id, row.Login, bcrypt.hashSync(row.Password, 6), row.Email, row.Discord, row.Ip, uuid.v4(), row.IsEmailConfirmed, new Date().toISOString(), new Date().toISOString()], 
+          [row.Id, row.Login, bcrypt.hashSync(row.Password, 6), row.Email, row.Discord, row.Ip, uuid.v4(), row.IsEmailConfirmed, new Date().toISOString().slice(0, 19).replace('T', ' '), new Date().toISOString().slice(0, 19).replace('T', ' ')], 
           function (err) {
             if (err) throw err;
           }
