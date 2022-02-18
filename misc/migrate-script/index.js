@@ -24,12 +24,11 @@ const targetConnect = mysql.createConnection({
   database: 'tfc_survival_development',
 });
 
-// const limit = 10;
-const limit = 1;
+const limit = 10;
 const countUsers = 2371;
 
-// for (let offset = 0; offset < countUsers; offset += limit) {
-for (let offset = 0; offset < 10; offset += limit) {
+for (let offset = 0; offset < countUsers; offset += limit) {
+// for (let offset = 0; offset < 10; offset += limit) {
   sourceConnect.query(
     'SELECT * FROM Users ORDER BY Id LIMIT ? OFFSET ? ;',
     [limit, offset],
