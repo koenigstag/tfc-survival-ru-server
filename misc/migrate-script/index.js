@@ -39,13 +39,13 @@ for (let offset = 0; offset < 1; offset += limit) {
         targetConnect.query(
           `INSERT INTO users 
           (
-            nickname, password_hash, email, discord
+            nickname, password_hash, email, discord, created_by_ip
           ) 
           VALUES 
           (
-            ? , ? , ? , ?
+            ? , ? , ? , ? , ?
           );`, 
-          [row.Login, bcrypt.hashSync(row.Password, 6), row.Email, row.Discord], 
+          [row.Login, bcrypt.hashSync(row.Password, 6), row.Email, row.Discord, row.Ip], 
           function (err) {
           if (err) throw err;
           }
