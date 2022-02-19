@@ -17,8 +17,8 @@ httpServer.listen(httpPort, () => {
 
 const httpsServer = https.createServer(
   {
-    key: fs.readFileSync(path.resolve("../misc", "./ssl/private.key")), // путь к ключу
-    cert: fs.readFileSync(path.resolve("../misc", "./ssl/domain_name.crt")), // путь к сертификату
+    key: fs.readFileSync(path.resolve(__dirname, "../misc", "./ssl/private.key")), // путь к ключу
+    cert: fs.readFileSync(path.resolve(__dirname, "../misc", "./ssl/domain_name.crt")), // путь к сертификату
   },
   app
 );
