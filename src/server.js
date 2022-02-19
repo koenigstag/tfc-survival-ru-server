@@ -7,7 +7,7 @@ const { log } = require("./misc/logger");
 const app = require("./app.js");
 
 const httpPort = process.env.PORT || 5001;
-const httpsPort = process.env.HTTPS_PORT || 5002;
+const httpsPort = process.env.HTTPS_PORT || 3001;
 
 const httpServer = http.createServer(app);
 
