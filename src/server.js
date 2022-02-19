@@ -1,13 +1,26 @@
-const http = require('http');
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname + '/../.env') });
-const { log } = require('./misc/logger');
-const app = require('./app.js');
+const http = require("http");
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
+require("dotenv").config({ path: path.resolve(__dirname + "/../.env") });
+const { log } = require("./misc/logger");
+const app = require("./app.js");
 
-const port = process.env.PORT || 5001;
+const httpPort = process.env.PORT || 5001;
+const httpsPort = process.env.HTTPS_PORT || 5002;
 
-const server = http.createServer(app);
+const httpServer = http.createServer(app);
 
-server.listen(port, () => {
-  log(`APP started on port ${port}`);
+httpServer.listen(httpPort, () => {
+  log(`APP started on port ${httpPort}`);
 });
+
+const httpsServer = https.createServer(
+  {
+    key: fs.readFileSync(path.resolve("../misc", "./ssl/private.key")), // путь к ключу
+    cert: fs.readFileSync(path.resolve("../misc", "./ssl/domain_name.crt")), // путь к сертификату
+  },
+  app
+);
+
+httpsServer.listen(httpsPort);
