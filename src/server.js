@@ -24,5 +24,5 @@ const httpsServer = https.createServer(
 );
 
 httpsServer.listen(httpsPort, () => {
-  log(`Https APP started on port ${httpsServer}`);
+  log(`Https APP started on port ${httpsPort}`);
 });
