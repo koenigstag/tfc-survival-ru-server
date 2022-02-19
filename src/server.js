@@ -12,7 +12,7 @@ const httpsPort = process.env.HTTPS_PORT || 5002;
 const httpServer = http.createServer(app);
 
 httpServer.listen(httpPort, () => {
-  log(`APP started on port ${httpPort}`);
+  log(`Http APP started on port ${httpPort}`);
 });
 
 const httpsServer = https.createServer(
@@ -23,4 +23,6 @@ const httpsServer = https.createServer(
   app
 );
 
-httpsServer.listen(httpsPort);
+httpsServer.listen(httpsPort, () => {
+  log(`Https APP started on port ${httpsServer}`);
+});
