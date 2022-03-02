@@ -8,7 +8,15 @@ const selfErrorHandles = require('./middlewares/selfError.handlers');
 const app = express();
 
 // use middlewares
-app.use(cors());
+app.use(cors({
+  origin: (origin, callback) => {
+    console.log(origin);
+    const origins = ['https://new.tfc-survival.ru', 'http://localhost:3000', 'http://tfc-survival.ru:3000'];
+    callback(undefined, origins);
+  },
+  optionsSuccessStatus: 200,
+  methods: "GET,OPTION,HEAD,PUT,PATCH,POST,DELETE",
+}));
 app.use(express.json());
 app.use('/static', express.static('public'));
 
