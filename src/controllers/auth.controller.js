@@ -27,7 +27,7 @@ module.exports.signIn = async (req, res, next) => {
 
     // проверить пароль
     if (!foundUser || !(await foundUser.comparePassword(password))) {
-      return next(createHttpError(404, 'Invalid credentials'));
+      return next(createHttpError(401, 'Invalid credentials'));
     }
 
     // проверить активации почты
@@ -48,7 +48,7 @@ module.exports.signIn = async (req, res, next) => {
       data.adminToken = await createAdminToken(data.user);
     }
 
-    return res.status(201).send({ data });
+    return res.status(200).send({ data });
   } catch (error) {
     next(error);
   }
@@ -197,4 +197,33 @@ module.exports.checkEmailActivation = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
+};
+
+module.exports.checkLauncherLogin = async (req, res, next) => {
+  const { params: { login: nickname, password, key } } = req;
+
+  if (key !== process.env.LAUNCHER_KEY) {
+    return next(createHttpError(403, 'Forbidden'));
+  }
+
+  if (!nickname || !password) {
+    return next(createHttpError(401, 'Invalid credentials'));
+  }
+
+  // найти пользователя
+  const foundUser = await User.findOne({
+    where: { nickname },
+  });
+
+  // проверить пароль
+  if (!foundUser || !(await foundUser.comparePassword(password))) {
+    return next(createHttpError(401, 'Invalid credentials'));
+  }
+
+  // проверить активации почты
+  if (!foundUser.isActivated) {
+    return next(createHttpError(424, 'Need to confirm email first'));
+  }
+
+  return res.status(200).send(`OK:${foundUser.nickname}`);
 };

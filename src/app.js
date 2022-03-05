@@ -18,6 +18,7 @@ app.use(cors({
   methods: "GET,OPTION,HEAD,PUT,PATCH,POST,DELETE",
 }));
 app.use(express.json());
+// domain/static/skins/username.png
 app.use('/static', express.static('public'));
 
 // DEBUG zone

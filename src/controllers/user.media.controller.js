@@ -1,4 +1,4 @@
-const { log } = require('../misc/logger');
+const { log } = require("../misc/logger");
 
 module.exports.setSkin = async (req, res, next) => {
   try {
@@ -6,10 +6,10 @@ module.exports.setSkin = async (req, res, next) => {
 
     // TODO add error handling
     if (!file) {
-      return next(new Error('Cannot upload file'));
+      return next(new Error("Cannot upload file"));
     }
 
-    const skinSrc = 'skins/' + file.filename;
+    const skinSrc = "skins/" + file.filename;
 
     res.status(200).send({ data: skinSrc });
   } catch (e) {
@@ -23,10 +23,10 @@ module.exports.setCape = async (req, res, next) => {
 
     // TODO add error handling
     if (!file) {
-      return next(new Error('Cannot upload file'));
+      return next(new Error("Cannot upload file"));
     }
-    
-    const capeSrc = 'capes/' + file.filename;
+
+    const capeSrc = "capes/" + file.filename;
 
     res.status(200).send({ data: capeSrc });
   } catch (e) {
