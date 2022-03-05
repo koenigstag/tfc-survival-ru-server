@@ -11,7 +11,7 @@ const app = express();
 app.use(cors({
   origin: (origin, callback) => {
     console.log('origin', origin);
-    const origins = ['https://new.tfc-survival.ru', 'http://localhost:3000', 'http://tfc-survival.ru:3000'];
+    const origins = ['https://new.tfc-survival.ru', 'http://localhost:3000', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru'];
     callback(undefined, origins);
   },
   optionsSuccessStatus: 200,
