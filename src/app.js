@@ -4,8 +4,17 @@ const apiRouter = require('./routes');
 const errorHandlers = require('./middlewares/error.handlers');
 const selfErrorHandles = require('./middlewares/selfError.handlers');
 
+let isLauncherRequest = false;
+
 // express vars
 const app = express();
+
+app.use((req, res, next) => {
+  console.log(req.socket.remoteAddress);
+  isLauncherRequest = req.socket.remoteAddress.includes('109.195.166.161');
+
+  next();
+})
 
 // use middlewares
 app.use(cors({
@@ -13,7 +22,7 @@ app.use(cors({
     console.log('\norigin', origin);
 
     const origins = ['https://new.tfc-survival.ru', 'http://localhost:3000', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru'];
-    if (origins.includes(origin)) {
+    if (origins.includes(origin) || isLauncherRequest) {
       callback(null, true);
     } else {
       callback(new Error('Invalid origin'), false);
