@@ -14,7 +14,10 @@ app.use((req, res, next) => {
   isLauncherRequest = req.socket.remoteAddress.includes('109.195.166.161');
 
   next();
-})
+});
+
+// domain/static/skins/username.png
+app.use('/static', express.static('public'));
 
 // use middlewares
 app.use(cors({
@@ -32,8 +35,6 @@ app.use(cors({
   methods: "GET,OPTION,HEAD,PUT,PATCH,POST,DELETE",
 }));
 app.use(express.json());
-// domain/static/skins/username.png
-app.use('/static', express.static('public'));
 
 // DEBUG zone
 app.use((req, res, next) => {
