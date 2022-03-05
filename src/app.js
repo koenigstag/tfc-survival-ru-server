@@ -12,7 +12,7 @@ app.use(cors({
   origin: (origin, callback) => {
     console.log('origin', origin);
     const origins = ['https://new.tfc-survival.ru', 'http://localhost:3000', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru'];
-    callback(undefined, origins);
+    callback(undefined, origins.includes(origin) ? origins : []);
   },
   optionsSuccessStatus: 200,
   methods: "GET,OPTION,HEAD,PUT,PATCH,POST,DELETE",
