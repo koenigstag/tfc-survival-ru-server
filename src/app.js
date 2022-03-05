@@ -3,6 +3,7 @@ const cors = require('cors');
 const apiRouter = require('./routes');
 const errorHandlers = require('./middlewares/error.handlers');
 const selfErrorHandles = require('./middlewares/selfError.handlers');
+const { log } = require('./misc/logger');
 
 let isLauncherRequest = false;
 
@@ -10,19 +11,19 @@ let isLauncherRequest = false;
 const app = express();
 
 app.use((req, res, next) => {
-  console.log(req.socket.remoteAddress);
+  log(req.socket.remoteAddress);
   isLauncherRequest = req.socket.remoteAddress.includes('109.195.166.161');
 
   next();
 });
 
 // domain/static/skins/username.png
-app.use('/static', express.static('public'));
+app.use('/static', cors(), express.static('public'));
 
 // use middlewares
 app.use(cors({
   origin: (origin, callback) => {
-    console.log('\norigin', origin);
+    log('\norigin', origin);
 
     const origins = ['https://new.tfc-survival.ru', 'http://localhost:3000', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru'];
     if (origins.includes(origin) || isLauncherRequest) {
