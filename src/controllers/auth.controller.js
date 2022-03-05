@@ -208,7 +208,7 @@ module.exports.checkLauncherLogin = async (req, res, next) => {
   }
 
   if (!nickname || !password) {
-    return next(createHttpError(401, 'Invalid credentials'));
+    return res.status(401).send('Неверный логин или пароль');
   }
   
   // найти пользователя
@@ -218,12 +218,12 @@ module.exports.checkLauncherLogin = async (req, res, next) => {
   
   // проверить пароль
   if (!foundUser || !(await foundUser.comparePassword(password))) {
-    return next(createHttpError(401, 'Invalid credentials'));
+    return res.status(401).send('Неверный логин или пароль');
   }
 
   // проверить активации почты
   if (!foundUser.isActivated) {
-    return next(createHttpError(424, 'Need to confirm email first'));
+    return res.status(424).send('Сначала подтвердите письмо на электронной почте');
   }
 
   return res.status(200).send(`OK:${foundUser.nickname}`);
