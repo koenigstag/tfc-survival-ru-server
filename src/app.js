@@ -10,7 +10,7 @@ const app = express();
 // use middlewares
 app.use(cors({
   origin: (origin, callback) => {
-    console.log(origin);
+    console.log('origin', origin);
     const origins = ['https://new.tfc-survival.ru', 'http://localhost:3000', 'http://tfc-survival.ru:3000'];
     callback(undefined, origins);
   },
