@@ -25,6 +25,10 @@ module.exports = (err, req, res, next) => {
   log('\nNew entry to error handlers with class:', err.constructor);
   log(`And message: ${err.message}`);
 
+  if (err.message === 'Invalid origin') {
+    res.status(403).send('Ошибка CORS');
+  }
+
   // Case TypeError
   if (!result || err instanceof TypeError) {
     result = handleTypeError(err);
