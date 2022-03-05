@@ -25,7 +25,7 @@ const targetConnect = mysql.createConnection({
 });
 
 const limit = 10;
-const countUsers = 2371;
+const countUsers = 2415;
 
 for (let offset = 0; offset < countUsers; offset += limit) {
 // for (let offset = 0; offset < 10; offset += limit) {
