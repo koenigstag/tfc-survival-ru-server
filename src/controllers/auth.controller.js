@@ -87,6 +87,7 @@ module.exports.signUp = async (req, res, next) => {
     const createdUser = await User.create({
       ...user,
       password,
+      // TODO refactor
       createdByIP: req.socket.remoteAddress,
       activationLink: link,
     });
@@ -200,7 +201,7 @@ module.exports.checkEmailActivation = async (req, res, next) => {
 };
 
 module.exports.checkLauncherLogin = async (req, res, next) => {
-  const { params: { login: nickname, password, key } } = req;
+  const { query: { login: nickname, password, key } } = req;
 
   if (key !== process.env.LAUNCHER_KEY) {
     return next(createHttpError(403, 'Forbidden'));
@@ -209,12 +210,12 @@ module.exports.checkLauncherLogin = async (req, res, next) => {
   if (!nickname || !password) {
     return next(createHttpError(401, 'Invalid credentials'));
   }
-
+  
   // найти пользователя
   const foundUser = await User.findOne({
     where: { nickname },
   });
-
+  
   // проверить пароль
   if (!foundUser || !(await foundUser.comparePassword(password))) {
     return next(createHttpError(401, 'Invalid credentials'));
