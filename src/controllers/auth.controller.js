@@ -82,7 +82,7 @@ module.exports.signUp = async (req, res, next) => {
 
     // найти пользователя
     const foundUser = await User.findOne({
-      where: { nickname },
+      where: { nickname: user.nickname },
     });
 
     if(foundUser) {
