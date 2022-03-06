@@ -25,7 +25,7 @@ app.use(cors({
   origin: (origin, callback) => {
     log('\norigin', origin);
 
-    const origins = ['https://new.tfc-survival.ru', 'http://localhost:3000', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru'];
+    const origins = ['https://www.tfc.su', 'http://localhost:3000', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru'];
     if (origins.includes(origin) || isLauncherRequest) {
       callback(null, true);
     } else {
