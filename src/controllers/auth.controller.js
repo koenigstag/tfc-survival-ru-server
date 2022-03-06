@@ -12,6 +12,7 @@ const {
   checkMailExpire,
 } = require('../services/mail.service');
 const prepareUser = require('../utils/prepareUser');
+const { log } = require('../misc/logger');
 
 module.exports.signIn = async (req, res, next) => {
   try {
@@ -61,7 +62,7 @@ module.exports.signUp = async (req, res, next) => {
       password,
     } = req;
 
-    console.log('remoteAddress', req.socket.remoteAddress);
+    log('remoteAddress', req.socket.remoteAddress);
 
     // проверить на доверенные домены почтовых сайтов
     if (user.email) {
@@ -77,6 +78,15 @@ module.exports.signUp = async (req, res, next) => {
           return next(createHttpError(403, 'Email domain is not acceptable'));
         }
       }
+    }
+
+    // найти пользователя
+    const foundUser = await User.findOne({
+      where: { nickname },
+    });
+
+    if(foundUser) {
+      return next(createHttpError(400, 'Nickname is already in use'));
     }
 
     // создать ссылку для подтверждения почты
