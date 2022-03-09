@@ -1,21 +1,21 @@
-const http = require("http");
-// const https = require("https");
+// const http = require("http");
+const https = require("https");
 const fs = require("fs");
 const path = require("path");
 require("dotenv").config({ path: path.resolve(__dirname + "/../.env") });
-const { log, logln } = require("./misc/logger");
+const { logln } = require("./misc/logger");
 const app = require("./app.js");
 
-const httpPort = process.env.PORT || 5001;
-// const httpsPort = process.env.HTTPS_PORT || 3001;
+// const httpPort = process.env.PORT || 5001;
+const httpsPort = process.env.HTTPS_PORT || 3001;
 
-const httpServer = http.createServer(app);
+/* const httpServer = http.createServer(app);
 
 httpServer.listen(httpPort, () => {
   logln(`Http APP started on port ${httpPort}`);
-});
+}); */
 
-/* const httpsServer = https.createServer(
+const httpsServer = https.createServer(
   {
     // key: fs.readFileSync(path.resolve(__dirname, "../misc", "./ssl/private.key")), // путь к ключу
     // cert: fs.readFileSync(path.resolve(__dirname, "../misc", "./ssl/domain_name.crt")), // путь к сертификату
@@ -26,4 +26,4 @@ httpServer.listen(httpPort, () => {
 
 httpsServer.listen(httpsPort, () => {
   logln(`Https APP started on port ${httpsPort}`);
-}); */
+});
