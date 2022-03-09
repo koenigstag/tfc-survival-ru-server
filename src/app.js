@@ -3,25 +3,39 @@ const cors = require('cors');
 const apiRouter = require('./routes');
 const errorHandlers = require('./middlewares/error.handlers');
 const selfErrorHandles = require('./middlewares/selfError.handlers');
-const { log } = require('./misc/logger');
+const { log, logln } = require('./misc/logger');
 
 let isLauncherRequest = false;
 
 // express vars
 const app = express();
 
+// DEBUG zone
 app.use((req, res, next) => {
-  log(req.socket.remoteAddress);
+  // logln('New Request: ', req);
+  next();
+});
+
+// use middlewares
+app.use(express.json());
+
+app.use((req, res, next) => {
   isLauncherRequest = req.socket.remoteAddress.includes('109.195.166.161');
+  if (!req.socket.remoteAddress.includes('109.195.166.161')) {
+    logln('Request address', req.socket.remoteAddress);
+  }
 
   next();
 });
 
 // domain/static/skins/username.png
-app.use('/static', cors(), express.static('public'));
+app.use('/static', cors({ origin: '*', methods: 'GET' }), express.static('public'));
 
-// use middlewares
-app.use(cors({
+// main page joke
+app.get('/', cors({ origin: '*', methods: 'GET' }), (req, res, next) => res.send('<b><i>Sanya huy sosi</i></b><br/>IP:' + req.socket.remoteAddress + '<br/>UA: ' + req.headers['user-agent']));
+
+// api router
+app.use('/api', cors({
   origin: (origin, callback) => {
     log('\norigin', origin);
 
@@ -34,21 +48,7 @@ app.use(cors({
   },
   optionsSuccessStatus: 200,
   methods: "GET,OPTION,HEAD,PUT,PATCH,POST,DELETE",
-}));
-app.use(express.json());
-
-// DEBUG zone
-app.use((req, res, next) => {
-  // DEBUG
-  // log('New Request: ', req);
-  next();
-});
-
-// main page joke
-app.get('/', (req, res, next) => res.send('<i>Sanya huy sosi</i>'));
-
-// api router
-app.use('/api', apiRouter);
+}), apiRouter);
 
 // error handlers
 app.use(errorHandlers);
