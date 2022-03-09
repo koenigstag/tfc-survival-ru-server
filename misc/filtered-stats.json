@@ -1,13 +1,14 @@
 [
   "stat.fallOneCm",
+  "stat.flyOneCm",
+  "stat.walkOneCm",
+  "stat.horseOneCm",
+  "stat.sprintOneCm",
   "stat.crouchOneCm",
+  "stat.climbOneCm",
   "stat.boatOneCm",
   "stat.swimOneCm",
-  "stat.sprintOneCm",
   "stat.diveOneCm",
-  "stat.climbOneCm",
-  "stat.walkOneCm",
-  "stat.flyOneCm",
 
   "stat.sneakTime",
   "stat.jump",
@@ -16,6 +17,7 @@
   "stat.damageTaken",
   "stat.damageDealt",
   "stat.mobKills",
+  "stat.playerKills",
   "stat.deaths",
   
   "stat.leaveGame",
