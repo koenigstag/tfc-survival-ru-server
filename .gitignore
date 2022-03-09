@@ -5,4 +5,5 @@
 **/sequelize*.json
 /todo*
 /public
+/misc/ssl
 .env
