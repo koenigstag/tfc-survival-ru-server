@@ -1,8 +1,8 @@
 export const client = axios.create({
   baseURL: `${SERVER_DOMAIN}/api`,
-  // headers: {
-    // Origin: 'https://tfc-survival.ru'
-  // }
+  headers: {
+    Origin: 'https://tfc-survival.ru',
+  }
 });
 
 client.interceptors.response.use(undefined, (error) => {
