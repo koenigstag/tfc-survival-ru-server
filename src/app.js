@@ -23,7 +23,7 @@ app.use((req, res, next) => {
   isLauncherRequest = req.socket.remoteAddress.includes('109.195.166.161');
   if (!req.socket.remoteAddress.includes('109.195.166.161')) {
     logln('Request address', req.socket.remoteAddress);
-  
+  }
 
   next();
 });
@@ -39,7 +39,7 @@ app.use('/api', cors({
   origin: (origin, callback) => {
     log('\norigin', origin);
 
-    const origins = ['http://localhost:3000', 'http://localhost:5500', 'http://localhost:3001', 'https://tfc-survival.ru:3001', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru', 'https://tfc.su', 'https://www.tfc.su'];
+    const origins = ['http://localhost:3000', 'http://localhost:5500', 'https://localhost:3001', 'https://tfc-survival.ru:3001', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru', 'https://tfc.su', 'https://www.tfc.su'];
     if (origins.includes(origin) || isLauncherRequest) {
       callback(null, true);
     } else {
