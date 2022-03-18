@@ -23,13 +23,13 @@ app.use((req, res, next) => {
   isLauncherRequest = req.socket.remoteAddress.includes('109.195.166.161');
   if (!req.socket.remoteAddress.includes('109.195.166.161')) {
     logln('Request address', req.socket.remoteAddress);
-  }
+  
 
   next();
 });
 
 // domain/static/skins/username.png
-app.use('/static', cors({ origin: '*', methods: 'GET' }), express.static('public'));
+app.use('/static', cors({ origin: '*' }), express.static('public'));
 
 // main page joke
 app.get('/', cors({ origin: '*', methods: 'GET' }), (req, res, next) => res.send('<b><i>Sanya huy sosi</i></b><br/>IP:' + req.socket.remoteAddress + '<br/>UA: ' + req.headers['user-agent']));
