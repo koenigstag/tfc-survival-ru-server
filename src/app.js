@@ -4,6 +4,7 @@ const apiRouter = require('./routes');
 const errorHandlers = require('./middlewares/error.handlers');
 const selfErrorHandles = require('./middlewares/selfError.handlers');
 const launcherRouter = require('./routes/launcher.router');
+const { getVKNews } = require('./controllers/common.controller');
 const { log, logln } = require('./misc/logger');
 
 let isLauncherRequest = false;
@@ -32,7 +33,7 @@ app.get('/', cors({ origin: '*', methods: 'GET' }), (req, res, next) => res.send
 app.use('/static', cors({ origin: '*', methods: 'GET' }), express.static('public'));
 
 // vk feed route
-app.use('/vknews', cors({ origin: '*', methods: 'GET' }), CommonController.getVKNews);
+app.use('/vknews', cors({ origin: '*', methods: 'GET' }), getVKNews);
 
 /*
  * secured routes
