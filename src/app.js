@@ -3,54 +3,67 @@ const cors = require('cors');
 const apiRouter = require('./routes');
 const errorHandlers = require('./middlewares/error.handlers');
 const selfErrorHandles = require('./middlewares/selfError.handlers');
+const launcherRouter = require('./routes/launcher.router');
 const { log, logln } = require('./misc/logger');
 
 let isLauncherRequest = false;
+const allowOrigins = ['http://localhost:3000', 'http://localhost:5500', 'https://localhost:3001', 'https://tfc-survival.ru:3001', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru', 'https://tfc.su', 'https://www.tfc.su'];
 
-// express vars
 const app = express();
 
-// DEBUG zone
-app.use((req, res, next) => {
-  // logln('New Request: ', req);
-  next();
-});
-
-// use middlewares
+/*
+ * use middlewares
+*/
 app.use(express.json());
 
 app.use((req, res, next) => {
-  isLauncherRequest = req.socket.remoteAddress.includes('109.195.166.161');
-  if (!req.socket.remoteAddress.includes('109.195.166.161')) {
-    logln('Request address', req.socket.remoteAddress);
-  }
-
+  isLauncherRequest = req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY || req.socket.remoteAddress.includes('109.195.166.161');
+  !req.socket.remoteAddress.includes('109.195.166.161') && logln('Request address', req.socket.remoteAddress);
   next();
 });
 
-// domain/static/skins/username.png
-app.use('/static', cors({ origin: '*' }), express.static('public'));
+/*
+ * public routes
+*/
+// main page plug
+app.get('/', cors({ origin: '*', methods: 'GET' }), (req, res, next) => res.send('IP:' + req.socket.remoteAddress + '<br/>UA: ' + req.headers['user-agent']));
 
-// main page joke
-app.get('/', cors({ origin: '*', methods: 'GET' }), (req, res, next) => res.send('<b><i>Sanya huy sosi</i></b><br/>IP:' + req.socket.remoteAddress + '<br/>UA: ' + req.headers['user-agent']));
+// /static/skins/%username%.png
+app.use('/static', cors({ origin: '*', methods: 'GET' }), express.static('public'));
+
+// vk feed route
+app.use('/vknews', cors({ origin: '*', methods: 'GET' }), CommonController.getVKNews);
+
+/*
+ * secured routes
+*/
+// launcher router
+app.get('/account', cors({ origin: 
+  (origin, callback) => {
+    allowOrigins.includes(origin) || isLauncherRequest
+    ? callback(null, true)
+    : callback(new Error('Invalid origin'), false);
+  },
+  methods: 'GET',
+  optionsSuccessStatus: 200,
+}), launcherRouter);
 
 // api router
 app.use('/api', cors({
   origin: (origin, callback) => {
     log('\norigin', origin);
 
-    const origins = ['http://localhost:3000', 'http://localhost:5500', 'https://localhost:3001', 'https://tfc-survival.ru:3001', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru', 'https://tfc.su', 'https://www.tfc.su'];
-    if (origins.includes(origin) || isLauncherRequest) {
-      callback(null, true);
-    } else {
-      callback(new Error('Invalid origin'), false);
-    }
+    allowOrigins.includes(origin)
+    ? callback(null, true)
+    : callback(new Error('Invalid origin'), false);
   },
-  optionsSuccessStatus: 200,
   methods: "GET,OPTION,HEAD,PUT,PATCH,POST,DELETE",
+  optionsSuccessStatus: 200,
 }), apiRouter);
 
-// error handlers
+/*
+ * error handlers
+*/
 app.use(errorHandlers);
 app.use(selfErrorHandles);
 
