@@ -1,9 +1,9 @@
+.*
+!.gitignore
 /node_modules/
-/.vscode/
-/.idea/
 **/sandbox/
 **/sequelize*.json
 /todo*
 /public
+!/public/news
 /misc/ssl
-.env
