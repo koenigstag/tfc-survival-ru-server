@@ -39,13 +39,12 @@ app.use('/vknews', cors({ origin: '*', methods: 'GET' }), getVKNews);
  * secured routes
 */
 // launcher router
-app.get('/account', cors({ origin: 
-  (origin, callback) => {
+app.use('/account', cors({
+  origin: (origin, callback) => {
     allowOrigins.includes(origin) || isLauncherRequest
     ? callback(null, true)
     : callback(new Error('Invalid origin'), false);
   },
-  methods: 'GET',
   optionsSuccessStatus: 200,
 }), launcherRouter);
 
