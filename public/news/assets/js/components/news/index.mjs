@@ -1,12 +1,10 @@
 import Article from "../article/index.mjs";
 
-export const news = [];
 export const articles = [];
 
-export default function NewsFeed(data) {
-  news.concat(data);
+export default function NewsFeed(props) {
 
-  for(const data of news) {
+  for(const data of props.news) {
     articles.push(Article(data));
   }
 

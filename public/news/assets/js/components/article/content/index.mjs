@@ -1,8 +1,7 @@
-export default function ArticleContent({ text }) {
+export default function ArticleContent(props) {
   return `
     <section>
-      {text.replaceAll('\n', '<br/>')}
-      text
+      ${props.text.replaceAll('\n', '<br/>')}
     </section>
   `;
 }

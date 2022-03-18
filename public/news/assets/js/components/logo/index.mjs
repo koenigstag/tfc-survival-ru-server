@@ -1,3 +1,3 @@
 export default function Logo() {
-  return `<img src="./assets/img/logo.png" alt="vk logo">`;
+  return `<img src="./favicon.ico" width="50" height="50" alt="vk logo">`;
 }

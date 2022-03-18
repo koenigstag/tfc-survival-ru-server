@@ -1,5 +1,5 @@
 import { client } from './index.mjs';
 
-export async function getNews() {
+export async function getVKNews() {
   return await client.get('/vknews');
 }
