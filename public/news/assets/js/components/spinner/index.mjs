@@ -1,5 +1,5 @@
 const stylesheets = `
-<link rel="stylesheet" href="/assets/css/spinner.css" />
+<link rel="stylesheet" href="./assets/css/spinner.css" />
 `;
 
 export default function Spinner() {
