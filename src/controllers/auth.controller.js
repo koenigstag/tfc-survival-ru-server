@@ -213,7 +213,9 @@ module.exports.checkEmailActivation = async (req, res, next) => {
 module.exports.checkLauncherLogin = async (req, res, next) => {
   const { query: { login: nickname, password } } = req;
 
-  if (req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY) {
+  console.log(req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY);
+
+  if (!req.isLauncherRequest) {
     return next(createHttpError(403, 'Forbidden'));
   }
 
