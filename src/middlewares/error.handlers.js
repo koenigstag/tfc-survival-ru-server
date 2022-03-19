@@ -22,7 +22,7 @@ module.exports = (err, req, res, next) => {
   let result = false;
 
   // log(err, '\n');
-  log('[HANDLER][ERROR]', `\nNew entry to error handlers with class: ${err.constructor}\nAnd message: ${err.message}`);
+  log('[HANDLER][ERROR]', `\nNew entry to error handlers with class: ${err.constructor.name}\nAnd message: ${err.message}`);
 
   if (err.message === 'Invalid origin') {
     return res.status(403).send('Ошибка CORS');

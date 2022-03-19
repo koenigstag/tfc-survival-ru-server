@@ -1,10 +1,11 @@
 'use strict';
-const { Model, ValidationError } = require('sequelize');
+const { Model, Op, ValidationError } = require('sequelize');
 const bcrypt = require('bcrypt');
 const {
   regex: { nicknameRegex, emailRegex, discordRegex, ipRegex, passwordRegex },
 } = require('../../validation');
 const { SALT_ROUNDS } = require('../../constants');
+const { log } = require('../../misc/logger');
 
 // TODO check password regex
 async function hashPassword (user, options) {
@@ -52,10 +53,19 @@ module.exports = (sequelize, DataTypes) => {
               return;
             }
 
+            const removeDots = value.replace(/\./g, '');
+            const userPart = removeDots.match(/^[\w]+(?=\+)|^.*@/)?.[0].replace('@', '');
+            const domainPart = value.match(/@.*$/)?.[0].replace('@', '').replace('.', '\\.');
+            const regexValue = new RegExp(`^${userPart.split('').join('\\.?')}\\.?@${domainPart}$|^${userPart}\\++\\w+@${domainPart}$|^${userPart}@${domainPart}$`);
+
+            log(regexValue);
+
             const users = await User.findAll({
               attributes: ['email'],
               where: {
-                email: value,
+                email: {
+                  [Op.regexp]: regexValue.toString().replace('/', ''),
+                },
               },
             });
 
