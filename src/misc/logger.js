@@ -6,15 +6,19 @@ const path = require('path');
 const { promisify } = require('util');
 const fastFolderSizeAsync = promisify(require('fast-folder-size'));
 
+function log(channel, ...data) {
+  console.log('\x1b[33m%s\x1b[0m', new Date().toLocaleString(), channel, ...data);
+}
+
 module.exports.log = (channel, ...data) => {
-  console.log('\x1b[33m%s\x1b[0m', new Date().toLocaleString(), `${channel} ${data}`);
+  log(channel, ...data);
 
   writeToLogfile(channel, ...data);
 };
 
 module.exports.logln = (channel, ...data) => {
   console.log('\n');
-  console.log('\x1b[33m%s\x1b[0m', new Date().toLocaleString(), channel, ...data);
+  log(channel, ...data);
 
   writeToLogfile(channel, ...data);
 };
