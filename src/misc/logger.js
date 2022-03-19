@@ -40,7 +40,7 @@ async function handleMoveLogFile() {
     const stats = await fspromise.stat(path.resolve(__dirname, '../../logs/latest.log'));
     
     // 1000ms * 60s * 60m * 24h
-    if (stats.birthtime.getTime()/*  < Date.now() - 1000 * 60 * 60 * 24 */) {
+    if (stats.birthtime.getTime() < Date.now() - 1000 * 60 * 60 * 24) {
       const dateDirname = new Date().toLocaleDateString().replace(/\./g, '-');
 
       try {
@@ -67,8 +67,8 @@ async function handleMoveLogFile() {
 }
 // handleMoveLogFile(); // debug
 
-// const archiveDirTask = cron.schedule('*/2 * * * *', handleArchiveLogDir);
-// archiveDirTask.start();
+const archiveDirTask = cron.schedule('*/4320 * * * *', handleArchiveLogDir);
+archiveDirTask.start();
 async function handleArchiveLogDir() {
   try {
     const logFiles = await fspromise.readdir(path.resolve(__dirname, '../../logs/'));
@@ -76,7 +76,7 @@ async function handleArchiveLogDir() {
       const dirStats = await fspromise.stat(path.resolve(__dirname, '../../logs/', file));
       const bytes = dirStats.isDirectory() ? await fastFolderSizeAsync(path.resolve(__dirname, '../../logs/', file)) : 0;
 
-      if (dirStats.isDirectory() && bytes > -1/* 5e7 */) {
+      if (dirStats.isDirectory() && bytes >= 5e6) {
 
         const output = fs.createWriteStream(path.resolve(__dirname, '../../logs/', `${file}.zip`));
         const archive = archiver('zip', {
@@ -98,6 +98,6 @@ async function handleArchiveLogDir() {
     console.log(error);
   }
 }
-handleArchiveLogDir(); // debug
+// handleArchiveLogDir(); // debug
 
 module.exports.writeToLogfile = writeToLogfile;
