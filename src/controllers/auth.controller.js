@@ -3,8 +3,8 @@ const { v4 } = require('uuid');
 const createHttpError = require('http-errors');
 const AuthService = require('../services/authService');
 const { User, RefreshToken } = require('../db/models');
-const admins = require('../admins.json');
-const emailDomains = require('../emailDomains.json');
+const admins = require('../config/admins.json');
+const emailDomains = require('../config/emailDomains.json');
 const { createAdminToken } = require('../services/jwtService');
 const {
   sendActivationMail,

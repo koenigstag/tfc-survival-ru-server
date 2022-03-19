@@ -6,7 +6,7 @@ const { SERVER_FOLDER, VK_GROUP, VK_API_VERSION } = require("../constants");
 module.exports.getBannedPlayers = async (req, res, next) => {
   try {
     const bannedPlayers = await fs.readFile(
-      `${SERVER_FOLDER}/banned-players.json`
+      `${SERVER_FOLDER}/misc/banned-players.json`
     );
     const list = JSON.parse(bannedPlayers) || [];
 

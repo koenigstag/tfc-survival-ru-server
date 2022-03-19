@@ -5,5 +5,5 @@
 **/sequelize*.json
 /todo*
 /public
-/misc/ssl
+/misc
 /logs

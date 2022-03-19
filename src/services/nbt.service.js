@@ -2,7 +2,7 @@ const fs = require("fs/promises");
 const _ = require("lodash");
 const nbtModule = require("nbt");
 const path = require("path");
-const filterStats = require("../../misc/filtered-stats.json");
+const filterStats = require("../config/filtered-stats.json");
 const {
   SERVER_FOLDER,
   PLAYERS_DATA_PATH,
