@@ -62,7 +62,7 @@ module.exports.signUp = async (req, res, next) => {
       password,
     } = req;
 
-    log('remoteAddress', req.socket.remoteAddress);
+    log('[RUNTIME][INFO]', `remoteAddress ${req.socket.remoteAddress}`);
 
     // проверить на доверенные домены почтовых сайтов
     if (user.email) {
@@ -213,7 +213,7 @@ module.exports.checkEmailActivation = async (req, res, next) => {
 module.exports.checkLauncherLogin = async (req, res, next) => {
   const { query: { login: nickname, password } } = req;
 
-  if (req.query['X-Launcher-Request'] !== process.env.LAUNCHER_KEY) {
+  if (req.isLauncherRequest) {
     return next(createHttpError(403, 'Forbidden'));
   }
 

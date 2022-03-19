@@ -19,7 +19,8 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   isLauncherRequest = req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY || req.socket.remoteAddress.includes('109.195.166.161');
-  !req.socket.remoteAddress.includes('109.195.166.161') && logln('Request address', req.socket.remoteAddress);
+  req.isLauncherRequest = isLauncherRequest;
+  !req.socket.remoteAddress.includes('109.195.166.161') && logln('[RUNTIME][INFO]', `Request from IP ${req.socket.remoteAddress}`);
   next();
 });
 
@@ -48,7 +49,7 @@ app.use('/account', cors({
 // api router
 app.use('/api', cors({
   origin: (origin, callback) => {
-    log('\norigin', origin);
+    log('[RUNTIME][INFO]', `Request from origin ${origin}`);
 
     allowOrigins.includes(origin)
     ? callback(null, true)

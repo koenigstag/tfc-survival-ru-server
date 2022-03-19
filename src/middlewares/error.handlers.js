@@ -22,8 +22,7 @@ module.exports = (err, req, res, next) => {
   let result = false;
 
   // log(err, '\n');
-  log('\nNew entry to error handlers with class:', err.constructor);
-  log(`And message: ${err.message}`);
+  log('[HANDLER][ERROR]', `\nNew entry to error handlers with class: ${err.constructor}\nAnd message: ${err.message}`);
 
   if (err.message === 'Invalid origin') {
     return res.status(403).send('Ошибка CORS');
@@ -44,7 +43,6 @@ module.exports = (err, req, res, next) => {
     result = handleSequelizeErrors(err);
   }
 
-  log('Error was handled: ' + Boolean(result));
   if (Boolean(result) === false || result.status === undefined) {
     result = {
       status: CommonHttpErrorCodes.InternalServerError,
@@ -52,8 +50,8 @@ module.exports = (err, req, res, next) => {
     };
   }
   res.status(result.status).send(newErrResponse(result.message));
-  log(
-    `Error handler response was sent with status code <${result.status}> and message: ${result.message}\n`
+  log('[HANDLER][ERROR]', 
+    `Error was handled: ${Boolean(result)}\nError handler response was sent with status code <${result.status}> and message: ${result.message}\n`
   );
 };
 

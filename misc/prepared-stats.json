@@ -1,4 +1,76 @@
 {
-  "timestamp": 1644067189,
-  "stats": []
+  "timestamp": 1647707891,
+  "stats": [
+    {
+      "stat.fallOneCm": 6188,
+      "stat.flyOneCm": 62145,
+      "stat.walkOneCm": 106784,
+      "stat.sprintOneCm": 44670,
+      "stat.crouchOneCm": 2674,
+      "stat.swimOneCm": 3466,
+      "stat.diveOneCm": 2259,
+      "stat.sneakTime": 3237,
+      "stat.jump": 377,
+      "stat.timeSinceDeath": 0,
+      "stat.damageTaken": 2844,
+      "stat.damageDealt": 76,
+      "stat.deaths": 22,
+      "stat.leaveGame": 74,
+      "stat.playOneMinute": 824438,
+      "nickname": "koenig"
+    },
+    {
+      "stat.flyOneCm": 3045,
+      "stat.walkOneCm": 3290,
+      "stat.sprintOneCm": 978,
+      "stat.jump": 8,
+      "stat.timeSinceDeath": 2063,
+      "stat.leaveGame": 3,
+      "stat.playOneMinute": 2063,
+      "nickname": "koenig1"
+    },
+    {
+      "stat.fallOneCm": 404,
+      "stat.flyOneCm": 425,
+      "stat.walkOneCm": 1898,
+      "stat.sprintOneCm": 948,
+      "stat.jump": 34,
+      "stat.timeSinceDeath": 35319,
+      "stat.damageTaken": 24,
+      "stat.damageDealt": 250,
+      "stat.mobKills": 1,
+      "stat.leaveGame": 16,
+      "stat.playOneMinute": 35319,
+      "nickname": "nick2"
+    },
+    {
+      "stat.flyOneCm": 297,
+      "stat.walkOneCm": 521,
+      "stat.sprintOneCm": 692,
+      "stat.jump": 9,
+      "stat.timeSinceDeath": 18820,
+      "stat.leaveGame": 9,
+      "stat.playOneMinute": 18821,
+      "nickname": "nick1"
+    },
+    {
+      "stat.fallOneCm": 18500,
+      "stat.flyOneCm": 167171,
+      "stat.walkOneCm": 181689,
+      "stat.sprintOneCm": 102370,
+      "stat.crouchOneCm": 5503,
+      "stat.swimOneCm": 5428,
+      "stat.diveOneCm": 10234,
+      "stat.sneakTime": 2801,
+      "stat.jump": 693,
+      "stat.timeSinceDeath": 283,
+      "stat.damageTaken": 3639,
+      "stat.damageDealt": 264,
+      "stat.mobKills": 1,
+      "stat.deaths": 50,
+      "stat.leaveGame": 130,
+      "stat.playOneMinute": 1194148,
+      "nickname": "koenigstag"
+    }
+  ]
 }
