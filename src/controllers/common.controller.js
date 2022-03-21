@@ -24,7 +24,7 @@ module.exports.getVKNews = async (req, res, next) => {
 
     // отправить новости как данные
     if (response.data) {
-      res.status(200).send(response.data.response.items.slice(0, 20));
+      res.status(200).send(response.data.response.items.slice(0, 10));
     }
   } catch (error) {}
 };
