@@ -17,9 +17,9 @@ const https = require("https");
 const httpsPort = process.env.HTTPS_PORT || 3001;
 const httpsServer = https.createServer(
   {
-    key: fs.readFileSync(path.resolve(__dirname, "../misc", "./ssl/private.key")), // путь к ключу
-    cert: fs.readFileSync(path.resolve(__dirname, "../misc", "./ssl/domain_name.crt")), // путь к сертификату
-    ca: fs.readFileSync(path.resolve(__dirname, "../misc", "./ssl/chain.crt")), // путь к CA
+    key: fs.readFileSync(path.resolve(__dirname, "../misc/ssl/private.key")), // путь к ключу
+    cert: fs.readFileSync(path.resolve(__dirname, "../misc/ssl/domain_name.crt")), // путь к сертификату
+    ca: fs.readFileSync(path.resolve(__dirname, "../misc/ssl/chain.crt")), // путь к CA
   },
   app
 );

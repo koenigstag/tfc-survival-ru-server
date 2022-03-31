@@ -26,5 +26,19 @@ module.exports.getVKNews = async (req, res, next) => {
     if (response.data) {
       res.status(200).send(response.data.response.items.slice(0, 10));
     }
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports.getServerPing = async (req, res, next) => {
+  try {
+    const pingURL = 'http://localhost:5676/';
+
+    const { data } = await axios.get(pingURL);
+
+    res.status(200).send({ data });
+  } catch (error) {
+    next(error);
+  }
 };
