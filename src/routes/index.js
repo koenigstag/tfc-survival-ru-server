@@ -11,6 +11,6 @@ router.use('/media', MediaRouter);
 
 router.use('/banlist', CommonController.getBannedPlayers);
 
-router.use('/ping', checkAccessToken, CommonController.getServerPing);
+router.use('/ping', CommonController.getServerPing);
 
 module.exports = router;
