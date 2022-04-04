@@ -7,8 +7,6 @@ const launcherRouter = require('./routes/launcher.router');
 const { getVKNews } = require('./controllers/common.controller');
 const { log, logln } = require('./misc/logger');
 
-let isLauncherRequest = false;
-let isRegisterRequest = false;
 const allowOrigins = ['http://localhost:3000', 'http://localhost:5500', 'https://localhost:3001', 'https://tfc-survival.ru:3001', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru', 'https://tfc.su', 'https://www.tfc.su'];
 
 const app = express();
@@ -19,9 +17,7 @@ const app = express();
 app.use(express.json());
 
 app.use((req, res, next) => {
-  isLauncherRequest = req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY || req.socket.remoteAddress.includes('109.195.166.161');
-  isRegisterRequest = req.path === '/api/auth/sign-up';
-  req.isLauncherRequest = isLauncherRequest;
+  req.isLauncherRequest = req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY || req.socket.remoteAddress.includes('109.195.166.161');
   !req.socket.remoteAddress.includes('109.195.166.161') && logln('[RUNTIME][INFO]', `Request from IP ${req.socket.remoteAddress}`);
   console.log(req.path);
   next();
@@ -54,7 +50,7 @@ app.use('/api', cors({
   origin: (origin, callback) => {
     log('[RUNTIME][INFO]', `Request from origin ${origin}`);
 
-    allowOrigins.includes(origin) || isRegisterRequest
+    allowOrigins.includes(origin)
     ? callback(null, true)
     : callback(new Error('Invalid origin'), false);
   },
