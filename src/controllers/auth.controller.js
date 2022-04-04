@@ -213,14 +213,12 @@ module.exports.checkEmailActivation = async (req, res, next) => {
 module.exports.checkLauncherLogin = async (req, res, next) => {
   const { query: { login: nickname, password } } = req;
 
-  console.log(req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY);
-
   if (!req.isLauncherRequest) {
-    return next(createHttpError(403, 'Forbidden'));
+    return next(createHttpError(200, 'Ошибка. Модифицированный клиент'));
   }
 
   if (!nickname || !password) {
-    return res.status(401).send('Неверный логин или пароль');
+    return res.status(200).send('Неверный логин или пароль');
   }
   
   // найти пользователя
@@ -230,12 +228,12 @@ module.exports.checkLauncherLogin = async (req, res, next) => {
   
   // проверить пароль
   if (!foundUser || !(await foundUser.comparePassword(password))) {
-    return res.status(401).send('Неверный логин или пароль');
+    return res.status(200).send('Неверный логин или пароль');
   }
 
   // проверить активации почты
   if (!foundUser.isActivated) {
-    return res.status(424).send('Сначала подтвердите письмо на электронной почте');
+    return res.status(200).send('Сначала подтвердите письмо на электронной почте');
   }
 
   return res.status(200).send(`OK:${foundUser.nickname}`);
