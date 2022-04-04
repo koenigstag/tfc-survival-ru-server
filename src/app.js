@@ -21,6 +21,7 @@ app.use(express.json());
 app.use((req, res, next) => {
   isLauncherRequest = req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY || req.socket.remoteAddress.includes('109.195.166.161');
   isRegisterRequest = req.path === '/api/auth/sign-up';
+  console.log(req.path);
   req.isLauncherRequest = isLauncherRequest;
   !req.socket.remoteAddress.includes('109.195.166.161') && logln('[RUNTIME][INFO]', `Request from IP ${req.socket.remoteAddress}`);
   next();
