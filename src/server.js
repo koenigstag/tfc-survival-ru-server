@@ -5,15 +5,15 @@ const { logln } = require("./misc/logger");
 const app = require("./app.js");
 
 
-const http = require("http");
+/* const http = require("http");
 const httpPort = process.env.PORT || 5001;
 const httpServer = http.createServer(app);
 httpServer.listen(httpPort, () => {
   logln('[STARTUP][INFO]', `Http APP started on port ${httpPort}`);
-});
+}); */
 
 
-/* const https = require("https");
+const https = require("https");
 const httpsPort = process.env.HTTPS_PORT || 3001;
 const httpsServer = https.createServer(
   {
@@ -25,4 +25,4 @@ const httpsServer = https.createServer(
 );
 httpsServer.listen(httpsPort, () => {
   logln('[STARTUP][INFO]', `Https APP started on port ${httpsPort}`);
-}); */
+});
