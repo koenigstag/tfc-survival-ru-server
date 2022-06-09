@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const crypto = require("crypto");
 const apiRouter = require('./routes');
 const errorHandlers = require('./middlewares/error.handlers');
 const selfErrorHandles = require('./middlewares/selfError.handlers');
@@ -8,6 +9,7 @@ const { getVKNews } = require('./controllers/common.controller');
 const { log, logln } = require('./misc/logger');
 
 const allowOrigins = ['http://localhost:3000', 'http://localhost:5500', 'https://localhost:3001', 'https://tfc-survival.ru:3001', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru', 'https://tfc.su', 'https://www.tfc.su'];
+const allowIps = ['::ffff:109.195.166.161'];
 
 const app = express();
 
@@ -15,10 +17,11 @@ const app = express();
  * use middlewares
 */
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  req.isLauncherRequest = req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY || req.socket.remoteAddress.includes('109.195.166.161');
-  !req.socket.remoteAddress.includes('109.195.166.161') && logln('[RUNTIME][INFO]', `Request from IP ${req.socket.remoteAddress}`);
+  req.isLauncherRequest = req.query['X-Launcher-Request'] === process.env.LAUNCHER_KEY || allowIps.includes(req.socket.remoteAddress);
+  !allowIps.includes(req.socket.remoteAddress) && logln('[RUNTIME][INFO]', `Request from IP ${req.socket.remoteAddress}`);
   console.log(req.path);
   next();
 });
@@ -34,6 +37,29 @@ app.use('/static', cors({ origin: '*', methods: 'GET' }), express.static('public
 
 // vk feed route
 app.use('/vknews', cors({ origin: '*', methods: 'GET' }), getVKNews);
+
+app.use('/bonus', (req, res, next) => {
+  try {
+    const { username, ip, timestamp, signature } = req.body;
+    if ( ! username || ! ip || ! timestamp || ! signature) {
+      throw new Error('Присланы не все данные, вероятно запрос подделан');
+    }
+
+    console.log(`${username}.${timestamp}.${process.env.MON_SECRET_KEY}`)
+    const check_signature = crypto.createHash('sha1').update(`${username}.${timestamp}.${process.env.MON_SECRET_KEY}`).digest('hex');
+    console.log(check_signature, signature)
+
+    if (check_signature !== signature) {
+      //throw new Error('Неверная подпись / секретный ключ');
+    }
+
+    // do db manipulations
+
+    res.send('ok, monitoring')
+  } catch (err) {
+    next(err)
+  }
+})
 
 /*
  * secured routes
