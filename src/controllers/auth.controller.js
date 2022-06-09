@@ -32,9 +32,9 @@ module.exports.signIn = async (req, res, next) => {
     }
 
     // проверить активации почты
-    if (!foundUser.isActivated) {
-      return next(createHttpError(424, 'Need to confirm email first'));
-    }
+    // if (!foundUser.isActivated) {
+    //   return next(createHttpError(424, 'Need to confirm email first'));
+    // }
 
     // создать сессию токенов
     const data = await AuthService.createSession(
@@ -107,10 +107,10 @@ module.exports.signUp = async (req, res, next) => {
     }
 
     // отправить письмо активации
-    await sendActivationMail(createdUser.email, link, createdUser.nickname);
+    // await sendActivationMail(createdUser.email, link, createdUser.nickname);
 
-    // return res.status(201).send({ data });
-    return res.status(201).end();
+    return res.status(201).send({ data: createdUser });
+    // return res.status(201).end();
   } catch (error) {
     next(error);
   }
@@ -232,9 +232,9 @@ module.exports.checkLauncherLogin = async (req, res, next) => {
   }
 
   // проверить активации почты
-  if (!foundUser.isActivated) {
-    return res.status(200).send('Сначала подтвердите письмо на электронной почте');
-  }
+  // if (!foundUser.isActivated) {
+  //   return res.status(200).send('Сначала подтвердите письмо на электронной почте');
+  // }
 
   return res.status(200).send(`OK:${foundUser.nickname}`);
 };

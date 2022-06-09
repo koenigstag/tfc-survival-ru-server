@@ -8,7 +8,7 @@ const launcherRouter = require('./routes/launcher.router');
 const { getVKNews } = require('./controllers/common.controller');
 const { log, logln } = require('./misc/logger');
 
-const allowOrigins = ['http://localhost:3000', 'http://localhost:5500', 'https://localhost:3001', 'https://tfc-survival.ru:3001', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru', 'https://tfc.su', 'https://www.tfc.su'];
+const allowOrigins = ['http://localhost:3000', 'http://localhost:5500', 'https://localhost:3001', 'http://localhost:3001', 'https://tfc-survival.ru:3001', 'http://tfc-survival.ru:3000', 'https://tfc-survival.ru', 'https://tfc.su', 'https://www.tfc.su'];
 const allowIps = ['::ffff:109.195.166.161'];
 
 const app = express();
