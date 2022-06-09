@@ -25,8 +25,11 @@ module.exports = {
   MAIL_EXPIRATION_TIME: 10 * 60 * 1000, // 10 min
   MAIL_LINK_SEPARATOR: '_',
 
-  REDIRECT_URL: mode === 'development' ? 'http://tfc-survival.ru:3000' : 'https://tfc-survival.ru',
-  ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'https://tfc-survival.ru:3001',
+  // REDIRECT_URL: mode === 'development' ? 'http://tfc-survival.ru:3000' : 'https://tfc-survival.ru',
+  // ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'https://tfc-survival.ru:3001',
+
+  REDIRECT_URL: mode === 'development' ? 'http://tfc-survival.ru:3000' : 'https://tfc.su',
+  ORIGIN_URL: mode === 'development' ? 'http://localhost:5001' : 'https://tfc.su:3001',
 
   SERVER_FOLDER: '/home/xelo/Desktop/server',
   PLAYERS_DATA_PATH: '/home/xelo/Desktop/server/world/playerdata',
